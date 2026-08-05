@@ -1,6 +1,752 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JecpackComposeNo1</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="name">Hello123213123123123123123312312313</string>
+    <string name="app_name">AI CLeaner</string>
+    <string name="s_d_t_1">🧹 Duplicate files found</string>
+    <string name="s_d_d_1">Free up space by removing repeated files in seconds</string>
+    <string name="s_d_t_2">📦 Large files detected</string>
+    <string name="s_d_d_2">Some big files may be slowing your phone down Clean them now</string>
+    <string name="s_d_t_3">⏳ Old files are piling up</string>
+    <string name="s_d_d_3">Review unused files and clear storage before it gets full</string>
+    <string name="s_d_t_4">📸 Too many screenshots</string>
+    <string name="s_d_d_4">Remove old screenshots you may no longer need</string>
+    <string name="s_d_t_5">🖼️ Photos taking space</string>
+    <string name="s_d_d_5">Compress photos safely and keep more room on your phone</string>
+    <string name="s_d_t_6">🎥 Videos use huge space</string>
+    <string name="s_d_d_6">Compress large videos to save storage without losing memories</string>
+    <string name="s_d_t_7">📅 Calendar needs cleanup</string>
+    <string name="s_d_d_7">Remove old events and keep your calendar fresh</string>
+    <string name="s_d_t_8">⚠️ Storage filling fast</string>
+    <string name="s_d_d_8">Clean duplicates large files and screenshots to free space now</string>
+    <string name="s_d_t_9">🤖 AI Cleaner is ready</string>
+    <string name="s_d_d_9">Let AI find files you can clean to recover space quickly</string>
+    <string name="s_d_t_10">✨ Quick cleanup time</string>
+    <string name="s_d_d_10">A few taps can remove clutter and make your phone feel lighter</string>
+
+    <plurals name="text_delete_files_permanently_title">
+        <item quantity="one">Allow "%1$s" delete %2$d file permanently</item>
+        <item quantity="other">Allow "%1$s" delete %2$d files permanently</item>
+    </plurals>
+
+    <plurals name="text_delete_calendar_events_confirm_title">
+        <item quantity="one">Allow %1$s to delete %2$d event</item>
+        <item quantity="other">Allow %1$s to delete %2$d events</item>
+    </plurals>
+
+    <plurals name="text_calendar_events_count">
+        <item quantity="one">%d Event</item>
+        <item quantity="other">%d Events</item>
+    </plurals>
+
+    <plurals name="text_delete_calendar_events_btn">
+        <item quantity="one">Delete %d Event</item>
+        <item quantity="other">Delete %d Events</item>
+    </plurals>
+
+    <plurals name="text_calendar_events_deleted_count">
+        <item quantity="one">%d event deleted</item>
+        <item quantity="other">%d events deleted</item>
+    </plurals>
+
+    <plurals name="text_all_file_info">
+        <item quantity="one">%1$d file • %2$s</item>
+        <item quantity="other">%1$d files • %2$s</item>
+    </plurals>
+
+    <plurals name="text_delete_files">
+        <item quantity="one">Delete %d File</item>
+        <item quantity="other">Delete %d Files</item>
+    </plurals>
+
+    <string name="text_calendar_my_calendar">My Calendar</string>
+    <string name="tv_delete_event">Deleting events…</string>
+    <string name="tv_dialog_allow_calendar_title">Allow "%s" to access Calendar</string>
+    <string name="tv_dialog_allow_calendar_des">Find old or duplicate calendar events for easy cleanup.</string>
+    <string name="tv_title_dialog_open_setting_calendar">Allow Calendar Access</string>
+
+    <string name="text_calendar_events">Calendar Events</string>
+    <string name="text_no_calendar_events">No calendar events to clean up</string>
+    <string name="text_sort_newest">▽ Newest</string>
+    <string name="text_sort_oldest">△ Oldest</string>
+    <string name="text_delete_calendar_events_desc">Events will be removed from Calendar</string>
+    <string name="text_delete_calendar_events_btn_idle">Delete</string>
+    <string name="text_calendar_cleans_left_today">You have %d free deletes left today!</string>
+    <string name="text_calendar_daily_limit">Daily limit: %d events</string>
+    <string name="text_calendar_daily_limit_reached_title">Daily delete limit reached</string>
+    <string name="text_calendar_daily_limit_reached_desc">You\'ve used all %d free deletes for today. Upgrade to Premium to delete more events.</string>
+    <string name="text_congratulation">Congratulation!</string>
+    <string name="text_calendar_cleaned_subtitle">You\'ve cleaned your calendar</string>
+    <string name="text_you_have_deleted">You have deleted</string>
+
+    <string name="text_clean_more_calendar_events">Clean more events</string>
+    <string name="text_back_to_home">Back to home</string>
+    <string name="text_large_and_old_files">Large &amp; Old Files</string>
+    <string name="text_smart_tools">Smart Tools</string>
+    <string name="text_all_files">All files</string>
+    <string name="text_other">Other</string>
+    <string name="text_select_by_type">Select by Type</string>
+    <string name="text_select_by_size">Select by Size</string>
+    <string name="text_huge">Huge</string>
+    <string name="text_average">Average</string>
+    <string name="text_small">Small</string>
+    <string name="text_select_by_access_date">Select by Access Date</string>
+    <string name="text_one_year_ago">One year ago</string>
+    <string name="text_six_months_ago">Six Months Ago</string>
+    <string name="text_one_month_ago">One Month Ago</string>
+    <string name="text_one_week_ago">One Week Ago</string>
+    <string name="text_last_week">Last Week</string>
+    <string name="text_great">Great</string>
+    <string name="text_delete_files_permanently_description">These files will be permanently deleted and can\’t be recovered.</string>
+    <string name="text_delete_permanently">Delete permanently</string>
+    <string name="text_document_detail_info">%1$s • %2$s</string>
+    <string name="text_allow_full_access">Allow full access</string>
+    <string name="text_no_access_to_files">No access to All files</string>
+    <string name="text_need_permission_to_access_title">Access Need to %s</string>
+    <string name="text_need_permission_to_access_message">%s needs access to your device storage.</string>
+    <string name="text_info">Info</string>
+    <string name="text_open">Open</string>
+    <string name="all_type">Type</string>
+    <string name="tv_allow_photo_and_video_permission_step_4">4. Select \"Allow\"</string>
+    <string name="dialog_request_permission_calendar_step_3">3. Tap to “Calendar”</string>
+
+    <string name="text_title_home">AI Cleaner</string>
+    <string name="text_pick_start_date">Start date</string>
+    <string name="text_pick_end_date">End date</string>
+    <string name="text_unlimited_cleaning">Unlimited Cleaning</string>
+    <string name="text_power_compress">Powerful Compression</string>
+    <string name="text_ad_free">Ad-Free Experience</string>
+    <string name="tv_restore">Restore</string>
+    <string name="delete_original_file_title">Delete original files?</string>
+    <string name="delete_original_message">Keep only the compressed photos and delete the originals to save space.</string>
+    <string name="tv_keep_originals">Keep Originals </string>
+    <string name="tv_low">Low</string>
+    <string name="tv_medium">Medium</string>
+    <string name="tv_high">High</string>
+    <string name="tv_item_in_trash">Items in Trash</string>
+    <string name="tv_des_back_swipe">Some photos are waiting in Trash. Review and delete permanently</string>
+    <string name="text_clean_now">Clean now</string>
+    <string name="text_title_confirm_delete">Delete selected files?</string>
+    <string name="text_go_pro">Pro</string>
+
+    <string name="all">All</string>
+    <string name="all_unknown">Unknown</string>
+    <string name="all_today">Today</string>
+    <string name="all_yesterday">Yesterday</string>
+    <string name="all_document">Document</string>
+    <string name="all_audio">Audio</string>
+    <string name="all_other">Other</string>
+    <string name="all_name">Name</string>
+    <string name="all_path">Path</string>
+    <string name="all_size">Size</string>
+    <string name="all_resolution">Resolution</string>
+    <string name="all_date">Date</string>
+    <string name="all_duration">Duration</string>
+    <string name="all_delete_format">Delete (%s)</string>
+    <string name="all_filter">Filter</string>
+    <string name="filter_all_days">All days</string>
+    <string name="filter_a_week">Within 7 days</string>
+    <string name="filter_a_month">Within 1 month</string>
+    <string name="filter_six_months">Within 6 months</string>
+    <string name="filter_customize">Customize</string>
+    <string name="all_filters_size">Size filter</string>
+    <string name="all_year">Year</string>
+    <string name="all_month">Month</string>
+    <string name="all_day">Day</string>
+    <string name="all_start_date">Start Date</string>
+    <string name="all_end_date">End Date</string>
+    <string name="all_space_saved">%s Space saved</string>
+    <string name="video_load_failed">Cannot watch the video</string>
+    <string name="duplicate_group_format">Set %d</string>
+    <string name="r_confirm_exit_msg">If you exit, the scan results will be removed. Are you sure you want to exit?</string>
+    <string name="r_confirm_delete_msg">Files will be permanently deleted and cannot be recovered.</string>
+    <string name="r_confirm_delete_title">Confirm delete?</string>
+    <string name="no_app_can_open_file">Unable to find an application that can open this file</string>
+    <string name="swipe">Swipe</string>
+    <string name="swipe_ultimate_space">Ultimate Space</string>
+    <string name="swipe_moderate_space">Moderate Space</string>
+    <string name="swipe_light_space">Light Space</string>
+    <plurals name="swipe_files_format">
+        <item quantity="one">%1$d/%2$d file</item>
+        <item quantity="other">%1$d/%2$d files</item>
+    </plurals>
+    <plurals name="swipe_files_in_trash">
+        <item quantity="one">%d file in Trash</item>
+        <item quantity="other">%d files in Trash</item>
+    </plurals>
+    <string name="swipe_undo">Undo</string>
+    <string name="swipe_empty_trash">Empty Trash</string>
+    <string name="swipe_delete">Delete</string>
+    <string name="swipe_keep">Keep</string>
+    <string name="swipe_move_to_trash">Move to trash</string>
+    <string name="swipe_keep_image">Keep image</string>
+    <string name="swipe_keep_video">Keep video</string>
+    <string name="swipe_thumb_no_item">No item here.</string>
+    <string name="swipe_photo_position_format">(%1$d/%2$d)</string>
+    <string name="swipe_detail_no_files_to_delete">There\'s no files to delete</string>
+    <string name="swipe_video_group_format">%1$s (%2$d/%3$d)</string>
+
+    <string name="swipe_intro_swipe_left">Swipe Left</string>
+    <string name="swipe_intro_left_subtitle_photos">to mark images as trash</string>
+    <string name="swipe_intro_left_subtitle_videos">to mark videos as trash</string>
+    <string name="swipe_intro_swipe_right">Swipe Right</string>
+    <string name="swipe_intro_right_subtitle_photos">to keep images for now</string>
+    <string name="swipe_intro_right_subtitle_videos">to keep videos for now</string>
+    <string name="swipe_trash_title">Trash</string>
+    <string name="swipe_trash_empty">No items in trash</string>
+    <string name="swipe_trash_expand_preview">View full size</string>
+    <string name="swipe_trash_restore_item">Restore from trash</string>
+    <string name="swipe_trash_banner_summary">%1$s • %2$s</string>
+    <string name="swipe_trash_banner_description">After emptying trash, the files stay in \"Trash\" for 30 days</string>
+    <string name="swipe_trash_banner_dismiss">Dismiss info</string>
+
+    <plurals name="swipe_trash_banner_files">
+        <item quantity="one">%d File</item>
+        <item quantity="other">%d Files</item>
+    </plurals>
+
+    <string name="limited_media_access_title">Limited access</string>
+    <string name="enable_access_subtitle">Enable full access to clean all</string>
+    <string name="limited_media_access_go_settings">Go to Settings</string>
+    <string name="tv_iap_title">Clean your storage</string>
+    <string name="tv_iap_sms">Get rid of what you don’t need</string>
+    <string name="tv_iap_video_and_photo">Video &amp; Photo Compressor</string>
+    <string name="tv_iap_swipe_to_clean">Swipe to clean</string>
+    <string name="tv_iap_no_ads_and_limits">No Ads and Limits</string>
+    <string name="tv_iap_free_month">3-day free trial, then $27.99/year ($2.33/month)</string>
+    <string name="tv_iap_go_premium">Go Premium</string>
+    <string name="tv_iap_sub_renew">Subscription renews automatically. Cancel anytime.</string>
+    <string name="tv_iap_term_of_use">Terms of Use</string>
+    <string name="all_home">Home</string>
+    <string name="all_swipe">Swipe</string>
+    <string name="all_compress">Compress</string>
+    <string name="all_settings">Settings</string>
+    <string name="text_storage_used">Storage Used</string>
+    <string name="text_ai_smart_clean">AI Smart Clean</string>
+    <string name="text_manual_clean">Manual Clean</string>
+    <string name="all_photos">Photos</string>
+    <string name="all_videos">Videos</string>
+    <string name="text_allow_access">Allow access</string>
+    <string name="all_files">Files</string>
+    <string name="text_to_clean">to clean</string>
+    <string name="text_photo_cleaner">Photo Cleaner</string>
+    <string name="text_video_cleaner">Video Cleaner</string>
+    <string name="text_similar_photos">Similar Photos</string>
+    <string name="text_duplicate_photos">Duplicate Photos</string>
+    <string name="text_similar_selfies">Similar Selfies</string>
+    <string name="text_blurred_photos">Blurred Photos</string>
+    <string name="text_similar_screenshots">Similar Screenshots</string>
+    <string name="text_screenshots">Screenshots</string>
+    <string name="text_all_photos">All photos</string>
+    <string name="text_duplicate_videos">Duplicate Videos</string>
+    <string name="text_similar_videos">Similar Videos</string>
+    <string name="text_short_recording">Short Recording</string>
+    <string name="text_screen_recording">Screen Recording</string>
+    <string name="text_all_videos">All Videos</string>
+    <string name="text_memories_files_information">%s of %s</string>
+    <plurals name="text_photos_information">
+        <item quantity="one">%d photo • %s</item>
+        <item quantity="other">%d photos • %s</item>
+    </plurals>
+    <plurals name="text_videos_information">
+        <item quantity="one">%d video • %s</item>
+        <item quantity="other">%d videos • %s</item>
+    </plurals>
+    <string name="text_select_all">Select all</string>
+    <string name="text_deselect_all">Deselect all</string>
+    <plurals name="text_delete_photos">
+        <item quantity="one">Delete %d Photo</item>
+        <item quantity="other">Delete %d Photos</item>
+    </plurals>
+    <plurals name="text_delete_videos">
+        <item quantity="one">Delete %d Video</item>
+        <item quantity="other">Delete %d Videos</item>
+    </plurals>
+    <string name="text_delete_video_one">Delete %s Video</string>
+    <string name="text_free_memories_size">(Free %s)</string>
+    <string name="text_image_and_memories_size_selected">%s %s • %s Selected • %s</string>
+    <string name="text_keep_all">Keep All</string>
+    <string name="text_best">Best</string>
+    <string name="text_swipe_mode">Swipe Mode</string>
+    <string name="text_suggestion_open_swipe_mode">Enter swipe mode to easily discard or keep photos &amp; videos</string>
+    <string name="all_confirm">Confirm</string>
+    <string name="all_from">From</string>
+    <string name="all_to">To</string>
+    <string name="text_select_date">Select a Date</string>
+    <string name="text_month_year_format" translatable="false">%s, %s</string>
+    <string name="text_allow_move_files_to_trash">Allow %s move %s files to trash</string>
+    <string name="text_ignore">Ignore</string>
+    <string name="text_allow">Allow</string>
+    <string name="text_see_ads_to_delete">Delete %s files</string>
+    <string name="text_limited_delete">Delete only %s files</string>
+    <string name="text_deleting_files">Deleting files…</string>
+    <string name="text_wait_until_the_progress_done">Hang tight! This may take a few minutes…</string>
+    <string name="text_almost_there">Almost there!</string>
+    <string name="text_suggest_to_delete_files_later">To free up you can delete files permanently later.</string>
+    <plurals name="text_photos_amount_move_to_trash">
+        <item quantity="one">%d Photo (%s)</item>
+        <item quantity="other">%d Photos (%s)</item>
+    </plurals>
+    <plurals name="text_videos_amount_move_to_trash">
+        <item quantity="one">%d Video (%s)</item>
+        <item quantity="other">%d Videos (%s)</item>
+    </plurals>
+    <string name="text_you_saved">You saved</string>
+    <string name="text_time_saved_with_app">%s mins</string>
+    <string name="text_clean_more_files">Clean more files</string>
+    <string name="text_go_to_trash">Go to Trash</string>
+    <string name="text_all_memories_in_trash_folder">Frees up %s by Empty Trash folder.</string>
+    <string name="text_similar">Similar</string>
+    <string name="text_duplicates">Duplicates</string>
+    <string name="text_sort_by">Sort by</string>
+    <string name="all_apply">Apply</string>
+    <string name="all_clear_dates">Clear Dates</string>
+    <plurals name="text_photo_amounts">
+        <item quantity="one">%d Photo</item>
+        <item quantity="other">%d Photos</item>
+    </plurals>
+    <plurals name="text_video_amounts">
+        <item quantity="one">%d Video</item>
+        <item quantity="other">%d Videos</item>
+    </plurals>
+
+    <plurals name="text_files_quantity">
+        <item quantity="one">%d File</item>
+        <item quantity="other">%d Files</item>
+    </plurals>
+    <string name="text_memories_saved">(%s)</string>
+    <string name="text_using_app_name">using %s</string>
+    <string name="text_selected_out_of_all">%s/%s</string>
+    <string name="text_trash">Trash</string>
+    <plurals name="text_trash_memories_info">
+        <item quantity="one">%d File • %s</item>
+        <item quantity="other">%d Files • %s</item>
+    </plurals>
+    <string name="text_files_in_trash_for_30_days">The files stay in “Trash" for 30 days</string>
+    <string name="text_empty_trash">Empty Trash</string>
+    <string name="text_restore_all_files">Restore All Files</string>
+    <string name="text_delete_from_this_device">Delete from this device</string>
+    <string name="text_delete_can_not_recovery_explanation">This will permanently delete the selected photos. This action can\'t be undone.</string>
+    <string name="text_day_remaining">Day remaining</string>
+    <string name="text_day_remaining_explanation">Photos and videos show the day remaining before deletion. After that time, items will be permanently deleted</string>
+    <string name="text_no_files_to_clean_up">No files to clean up</string>
+    <string name="text_use_cleaner">using %s</string>
+    <plurals name="text_remaining_days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <plurals name="text_all_files_to_clean">
+        <item quantity="one">%d File • %s to clean</item>
+        <item quantity="other">%d Files • %s to clean</item>
+    </plurals>
+    <string name="text_save_up_to">Save up to</string>
+    <string name="text_smart_cleaning">Smart Cleaning</string>
+    <string name="text_duplicate">Duplicate</string>
+    <string name="text_blurry">Blurry</string>
+    <string name="text_description_delete_can_not_be_undone">This will delete the selected files. This action can\'t be undone.</string>
+    <string name="text_compress_mode">Compress Mode</string>
+    <string name="text_compress_mode_description">Tab to start reduce the files\' size</string>
+    <string name="text_reduce_size">Reduce Size</string>
+    <string name="text_quick_action">Quick Action</string>
+    <string name="text_onboarding_1_title">AI Smart Clean</string>
+    <string name="intro_page_1_des">Automatically find and clean unnecessary files.</string>
+    <string name="text_onboarding_2_title">Swipe with full control</string>
+    <string name="intro_page_2_des">Delete only what you don’t need.</string>
+    <string name="text_onboarding_3_title">Compress, keep quality</string>
+    <string name="intro_page_3_des">Make files smaller in seconds.</string>
+    <string name="all_newest">Newest</string>
+    <string name="all_oldest">Oldest</string>
+    <string name="all_largest">Largest</string>
+    <string name="all_smallest">Smallest</string>
+    <string name="all_deselect">Deselect</string>
+    <string name="all_share">Share</string>
+    <string name="request_go_to_permission_step_2">2. Go to Permission</string>
+    <string name="tv_allow_photo_and_video_permission_step_3">3. Allow Photos &amp; videos usage</string>
+    <string name="tv_compressed_photo">Compressed Photos</string>
+    <string name="tv_compressed_video">Compressed Videos</string>
+    <string name="tv_save_up_to">Save up to</string>
+    <string name="tv_largest">Largest</string>
+    <string name="tv_compress">Compress</string>
+    <string name="tv_settings">Settings</string>
+    <string name="tv_all_photo">All Photos</string>
+    <string name="tv_photo">Photo</string>
+    <string name="tv_all_video">All Videos</string>
+    <string name="tv_video">Video</string>
+    <string name="tv_videos_count">videos</string>
+    <string name="tv_videos_count_one">video</string>
+    <string name="tv_photos">Photos</string>
+    <string name="tv_photos_count">photos</string>
+    <string name="tv_photos_count_one">photo</string>
+    <string name="tv_videos">Videos</string>
+    <string name="compress_count_format">Compress %1$d %2$s</string>
+    <string name="compress_video">Compress Video</string>
+    <string name="original_size">Original</string>
+    <string name="target_size">Target size</string>
+    <string name="compress_progress_title">Compressing files…</string>
+    <string name="compress_progress_subtitle_photo">Hang tight! This may take a few minutes.</string>
+    <string name="compress_progress_subtitle_video">We’re working in the background.
+You can keep browsing while we finish.</string>
+    <string name="compress_success_title">Compression complete</string>
+    <string name="compress_success_you_compressed">You have compressed</string>
+    <string name="compress_success_you_freed">You freed up</string>
+    <string name="compress_success_photos_size">(%1$s)</string>
+    <plurals name="compress_success_count_photos">
+        <item quantity="one">%d Photo</item>
+        <item quantity="other">%d Photos</item>
+    </plurals>
+    <plurals name="compress_success_count_videos">
+        <item quantity="one">%d Video</item>
+        <item quantity="other">%d Videos</item>
+    </plurals>
+    <string name="compress_success_percent_format">%1$.1f%%</string>
+    <string name="compress_success_continue">Continue Compress</string>
+    <string name="compress_another_video">Compress Another Video</string>
+    <string name="compress_success_continue_browsing">Continue browsing</string>
+    <string name="tv_more_spare">more space</string>
+    <string name="compress_success_back_home">Back to Home</string>
+    <string name="compress_video_larger_than_original">Your video is now at the smallest possible size and can’t be compressed further.</string>
+    <string name="compress_video_error_title">Video Error</string>
+    <string name="compress_video_error_message">This video can\'t be opened or processed, so it can\'t be compressed.</string>
+    <string name="snackbar_success_subtitle">Your file is ready to view.</string>
+    <string name="snackbar_success_view_file">View file</string>
+    <string name="quality_low">Low Quality</string>
+    <string name="quality_medium">Medium Quality</string>
+    <string name="quality_high">High Quality</string>
+    <string name="delete_original_title">Delete Original?</string>
+    <string name="all_no">No</string>
+    <string name="all_yes">Yes</string>
+    <string name="summary_format">%1$d %2$s • %3$s</string>
+    <string name="empty_photos_video">No files to clean up</string>
+    <string name="tv_you_have_not_granted">You haven’t granted access to your photos and videos yet.</string>
+    <string name="notification_channel_compress_name">Compression</string>
+    <string name="notification_compress_video_title">Video Compressing</string>
+    <string name="notification_compress_video_progress">Video %1$d of %2$d</string>
+    <string name="notification_compress_video_progress_percent">Compressed %1$d%% of 100%% videos</string>
+    <plurals name="notification_compress_video_done">
+        <item quantity="one">%d video compressed, saved %s</item>
+        <item quantity="other">%d videos compressed, saved %s</item>
+    </plurals>
+    <string name="notification_compress_video_failed">Compression failed</string>
+    <string name="toast_compress_video_background">Video compression running in background. You can leave the app.</string>
+    <string name="toast_compress_in_progress">Compressing</string>
+    <string name="snackbar_compress_actions_shortly">Actions will be available shortly.</string>
+    <string name="snackbar_compress_still_in_progress">Compressing still in progress</string>
+    <string name="compress_video_detail_progress">Compressing 1/1 video — %1$d%%</string>
+    <string name="tv_language">Language</string>
+    <string name="tv_subscription_setting">Manage Subscription</string>
+    <string name="tv_rate_app_setting">Rate app</string>
+    <string name="tv_share_app_setting">Share app</string>
+    <string name="tv_privacy_policy_setting">Privacy policy</string>
+    <string name="tv_term_of_use_setting">Term of Use</string>
+    <string name="tv_eu_consent">EU Consent</string>
+    <string name="tv_title_dialog_back_from_swipe">Are you sure you want to leave?</string>
+    <string name="tv_sub_dialog_back_from_swipe">There are some photos in the Trash Bin. Review and delete permanently</string>
+    <string name="tv_save_and_exit">Save &amp; Exit</string>
+    <string name="tv_open_trash">Open Trash</string>
+    <string name="tv_restore_all_file">Restore All Files</string>
+    <string name="tv_all_file_reviewed">All photos reviewed 🎉</string>
+    <string name="tv_no_item_delete">No items to delete</string>
+    <plurals name="tv_file_ready_delete">
+        <item quantity="one">%d item ready to delete</item>
+        <item quantity="other">%d items ready to delete</item>
+    </plurals>
+    <string name="tv_continue">Continue</string>
+    <string name="tv_title_dialog_open_setting_photo">To use %s, please allow Photos &amp; videos access in settings</string>
+    <string name="tv_dialog_allow_storage_title">Allow %s to access your Photos &amp; videos</string>
+    <string name="tv_dialog_allow_storage_des">To access your photos and videos for editing and management.</string>
+    <string name="ads_error_no_fill">No ads available right now. Please try again.</string>
+    <string name="ads_error_network">Connection error. Please check your internet and try again.</string>
+    <string name="ads_error_other">Something went wrong. Please try again.</string>
+
+    <string name="request_permission_storage_title">This app needs access to Storage/Files</string>
+    <string name="request_permission_step_1">1. Tap Open Settings</string>
+    <string name="request_permission_storage_step_3">3. Allow access to Storage/Files</string>
+    <string name="iap_day">Day</string>
+    <string name="iap_v2_week">week</string>
+    <string name="iap_month">Month</string>
+    <string name="iap_v2_monthly">Monthly</string>
+    <string name="iap_months">Months</string>
+    <string name="iap_year">Year</string>
+    <string name="iap_yearly">Yearly</string>
+    <string name="tv_the_person_try_access">This person tried to access your %s app.See who\'s this.</string>
+
+    <string name="language_apply_language">Applying language…</string>
+    <string name="intro_page_two_title">Spy Camera snaps anyone who tries to break in</string>
+    <string name="intro_page_three_title">Set a schedule to lock apps during study, sleep, or focus time</string>
+
+    <string name="tv_pin_code">PIN</string>
+    <string name="tv_pattern_code">Pattern</string>
+    <string name="alias_weather">Weather</string>
+    <string name="alias_calculate">Calculator</string>
+
+
+    <string name="all_next">Next</string>
+    <string name="all_start">Start</string>
+    <string name="all_done">Done</string>
+    <string name="all_ok">OK</string>
+    <string name="all_cancel">Cancel</string>
+    <string name="all_note">Note</string>
+    <string name="all_save">Save</string>
+    <string name="all_delete">Delete</string>
+    <string name="tv_delete">Delete (%s)</string>
+    <string name="all_open_setting">Open settings</string>
+    <string name="all_rhythm">Rhythm</string>
+    <string name="all_continuous">Continuous</string>
+    <string name="all_get_started">Get Started</string>
+    <string name="all_retry">Retry</string>
+    <string name="all_default">Default</string>
+    <string name="all_welcome_to_app">Welcome to %s</string>
+    <string name="all_disco">Disco</string>
+    <string name="all_vibration_mode_heartbeat">Heartbeat</string>
+    <string name="all_vibration_mode_ticktock">Ticktock</string>
+    <string name="all_custom">Custom</string>
+    <string name="all_uninstall">Uninstall</string>
+
+    <string name="request_permission_phone_title">This app needs Phone access</string>
+    <string name="request_permission_step_2">2. Permissions</string>
+    <string name="request_permission_phone_step_3">3. Allow access to Phone</string>
+    <string name="require_turn_on_network_title">No Network Connection. Please turn on the network and try again!</string>
+
+    <string name="uninstall_message_note">If you encounter the application not working as expected.\n\nTry activating it again.</string>
+    <string name="uninstall_button_do_not_uninstall_yet">Adjust Sensitivity</string>
+    <string name="uninstall_button_still_want_to_uninstall">Still want to uninstall</string>
+    <string name="uninstall_title_issue_use_process">Issues you encountered during usage</string>
+    <string name="uninstall_reason_1">Feature does not work.</string>
+    <string name="uninstall_reason_2">Too many ads.</string>
+    <string name="uninstall_reason_3">I do not need it anymore.</string>
+
+    <string name="in_app_update_message">An update has just been downloaded with some performance improvements and minor bug fixes.</string>
+    <string name="in_app_update_restart">Restart</string>
+    <string name="change_language_title">Language</string>
+    <string name="dialog_request_permission_post_notification_title">Please enable notification permissions to use this feature</string>
+    <string name="dialog_request_permission_step_1">1. Tap to open Settings</string>
+    <string name="dialog_request_permission_post_notification_step_2">2. Navigate to Notifications</string>
+    <string name="dialog_request_permission_post_notification_step_3">3. Enable Notifications</string>
+
+    <string name="exit_app_content">Tap again to exit!</string>
+
+    <string name="tv_rate_us">Rate us</string>
+    <string name="app_not_installed">%s Not Install</string>
+
+    <string name="rating_enjoy_app">Enjoying App?</string>
+    <string name="tv_title_rating_1_2_star">Sorry you didn’t enjoy it!</string>
+    <string name="rating_thanks_for_feedback">Thanks for your feedback!</string>
+    <string name="rating_great_to_hear">Great to hear!</string>
+    <string name="rating_enjoying_it">Glad you’re enjoying it</string>
+    <string name="rating_best_rating_we_can">The best rate we can get</string>
+    <string name="rating_thank_you_for_your_feedback">Thank you for your feedback</string>
+    <string name="rating_des_how_interesting">How interesting is this to you?</string>
+    <string name="rating_looking_to_improve">We’re always looking to improve.</string>
+    <string name="rating_our_great_motivation_message">Your satisfaction is our greatest motivation!</string>
+    <string name="tv_rate_des_default">Your 5 stars help us!</string>
+    <string name="tv_rate_des_1_2_3_star">Please let us know how we can improve.</string>
+    <string name="tv_rate_des_5_star">Thanks for the 5 stars! You made our day!</string>
+
+    <string name="all_lock">Locked</string>
+
+    <string name="unlock">Unlock</string>
+
+    <string name="dialog_request_permission_user_access_content_3_xiaomi">This permission helps %s detect applications launching and display the password request screen to protect your applications.</string>
+
+
+    <string name="tv_give_feedback">Give Feedback</string>
+    <string name="tv_clock">Clock</string>
+    <string name="tv_delete_this_photo">Delete this photo?</string>
+    <string name="tv_des_dialog_delete">Once deleted, this photo can’t be restored.</string>
+    <string name="tv_des_dialog_delete_all">It will be permanently removed from vault.</string>
+    <string name="tv_delete_this_photo_all">Delete photo(s)?</string>
+    <string name="tv_feedback_sms">We will do our best to provide a better experience for users</string>
+
+    <string name="label_success">Success</string>
+
+    <string name="day_sunday">Sun</string>
+    <string name="day_monday">Mon</string>
+    <string name="day_tuesday">Tue</string>
+    <string name="day_wednesday">Wed</string>
+    <string name="day_thursday">Thu</string>
+    <string name="day_friday">Fri</string>
+    <string name="day_saturday">Sat</string>
+
+    <string name="tv_knock_code">Knock Code</string>
+    <string name="tv_switch">Switch</string>
+    <string name="tv_confirm">Confirm</string>
+    <string name="tv_to_use_this_theme">To use this theme, Random Keypad must be off. Re-enable anytime in Settings.</string>
+    <string name="tv_random_keypad">Random keypad unsupported</string>
+    <string name="tv_current_theme_not_compatible">Current theme not compatible</string>
+    <string name="tv_enable_random_keypad">To enable Random Keypad, you need to switch to the default theme.</string>
+    <string name="tv_switch_passcode_sms">You\’re using %s Lock. This theme requires %s Lock. Switch now?</string>
+
+    <string name="month_january">Jan</string>
+    <string name="month_february">Feb</string>
+    <string name="month_march">Mar</string>
+    <string name="month_april">Apr</string>
+    <string name="month_may">May</string>
+    <string name="month_june">Jun</string>
+    <string name="month_july">Jul</string>
+    <string name="month_august">Aug</string>
+    <string name="month_september">Sep</string>
+    <string name="month_october">Oct</string>
+    <string name="month_november">Nov</string>
+    <string name="month_december">Dec</string>
+
+    <string name="notification_compress_video_failed_sms">We couldn\'t compress this file. Please try again later.</string>
+    <string name="notification_compress_limit_title">Nothing to Compress</string>
+    <string name="notification_compress_limit_sms">This file is already as small as it can be.</string>
+    <string name="iap_title">AI Cleaner Pro</string>
+    <string name="iap_benefits">Clean ad-free. Delete without limits.</string>
+    <string name="all_upgrade_now">Upgrade now</string>
+    <string name="iap_v2_upgrade_des">Only %s.</string>
+    <string name="all_start_free_trial">Start free trial</string>
+    <string name="iap_v2_get_free_trial_then_v2">%s free trial. Then %s.</string>
+    <string name="iap_subscription_successful">Subscription successful</string>
+    <string name="iap_restore_failed">No valid subscription found.</string>
+    <string name="iap_subscription_failed">Subscribe failed. Please try again!</string>
+    <string name="text_your_file_has_been_loading">Your file has been loading…</string>
+    <string name="text_stop_restore">Stop restore?</string>
+    <string name="text_stop_restore_description">Stopping now may cause some files to not restore properly.</string>
+    <string name="all_stop">Stop</string>
+    <string name="text_delete_failed_title">Delete Failed</string>
+    <string name="text_delete_failed_description">Something went wrong. Please try again.</string>
+    <plurals name="text_smart_select_photo_info">
+        <item quantity="one">%1$d/%2$d photo • Save %3$s</item>
+        <item quantity="other">%1$d/%2$d photos • Save %3$s</item>
+    </plurals>
+    <plurals name="text_smart_select_video_info">
+        <item quantity="one">%1$d/%2$d video • Save %3$s</item>
+        <item quantity="other">%1$d/%2$d videos • Save %3$s</item>
+    </plurals>
+
+    <string name="text_daily_limit_cleans_amount">Daily limit: 05 cleans</string>
+    <plurals name="text_clean_files_left_today">
+        <item quantity="one">You have\n %1$s cleans left today!</item>
+        <item quantity="other">You have\n %1$s cleans left today!</item>
+    </plurals>
+    <string name="text_daily_clean_limit_reached">Daily clean\n limit reached</string>
+    <string name="text_recommend_upgrade_to_unlimit_delete_files">You’ve used all 05 cleans for today. Upgrade to continue deleting files without limits.</string>
+    <string name="tv_dialog_allow_manage_external_storage_title">Allow \"%s\" to access all files</string>
+    <string name="tv_dialog_allow_manage_external_storage_description">To access all files for editing and management.</string>
+    <string name="all_contacts">Contacts</string>
+    <string name="text_allow_contacts_access">Allow Contacts Access</string>
+    <string name="text_enable_contacts_description">Enable contacts permission to delete contacts.</string>
+    <string name="tv_read_contact_permission_step_1">1. Open \"Settings\"</string>
+    <string name="tv_read_contact_permission_step_2">2. Tap to \"Allow\"</string>
+    <string name="tv_read_contact_permission_step_3">3. Tap to \"Contacts\"</string>
+    <string name="tv_read_contact_permission_step_4">4. Select \"Allow\"</string>
+    <plurals name="text_quantity_contacts">
+        <item quantity="one">%1$d contact</item>
+        <item quantity="other">%1$d contacts</item>
+    </plurals>
+    <string name="text_incomplete">Incomplete</string>
+    <string name="text_all_contacts">All Contacts</string>
+    <string name="text_backups">Backups</string>
+    <string name="text_merged_contact">Merged contact</string>
+    <string name="text_select_contact_to_merge">Select contact to merge</string>
+    <string name="text_missing_phone_number">Missing phone number</string>
+    <string name="text_missing_name">Missing name</string>
+    <string name="text_delete_contacts">Delete Contacts</string>
+    <string name="text_auto_backup">Auto Backup</string>
+    <string name="text_auto_backup_description">Automatically back up contacts before changes</string>
+    <string name="text_no_backups_available">No backups available</string>
+    <string name="text_merge_contacts">Merge contacts</string>
+    <string name="text_merge_contacts_1">Merge contacts?</string>
+    <plurals name="text_merge_quantities_contacts">
+        <item quantity="one">Merge %1$d Contact</item>
+        <item quantity="other">Merge %1$d Contacts</item>
+    </plurals>
+    <plurals name="text_merged_contacts_amount_day">
+        <item quantity="one">You have \n %1$s merge left today!</item>
+        <item quantity="other">You have \n %1$s merges left today!</item>
+    </plurals>
+    <string name="text_daily_ten_limit_contact_merges">Daily limit: 10 merged contact</string>
+    <plurals name="text_restored_contacts_amount_day">
+        <item quantity="one">You can recover\n %1$s more contact today!</item>
+        <item quantity="other">You can recover\n %1$s more contacts today!</item>
+    </plurals>
+    <string name="text_daily_ten_limit_contact_restores">Daily limit: 10 contacts</string>
+    <string name="text_daily_restore_limit_reached">Daily recovery\nlimit reached</string>
+    <string name="text_restore_limit_reached_description">You can recover up to 10 contacts per day. Come back tomorrow to recover more.</string>
+    <plurals name="text_merge_quantities_contacts_title">
+        <item quantity="one">Merge %1$d contact?</item>
+        <item quantity="other">Merge %1$d contacts?</item>
+    </plurals>
+    <string name="text_remove_duplicate_after_merging">Duplicate contacts will be removed after merging.</string>
+    <string name="all_merge">Merge</string>
+    <string name="text_deleting_contacts">Deleting contacts…</string>
+    <string name="text_cleaned_your_contact">You\'ve cleaned your contact</string>
+    <string name="text_you_have_deletec">You have deleted</string>
+    <plurals name="text_contacts_deleted">
+        <item quantity="one">%1$d Contact</item>
+        <item quantity="other">%1$d Contacts</item>
+    </plurals>
+    <plurals name="text_contacts_deleted_with_size">
+        <item quantity="one">%1$d Contact (%2$s)</item>
+        <item quantity="other">%1$d Contacts (%2$s)</item>
+    </plurals>
+    <string name="text_memories">(%1$s)</string>
+    <string name="all_in_complete">Incomplete</string>
+    <plurals name="text_delete_contacts_amount">
+        <item quantity="one">Delete %1$d Contact</item>
+        <item quantity="other">Delete %1$d Contacts</item>
+    </plurals>
+    <plurals name="text_delete_contacts_amount_in_day">
+        <item quantity="one">You have \n %1$s clean left today!</item>
+        <item quantity="other">You have \n %1$s cleans left today!</item>
+    </plurals>
+    <string name="text_daily_ten_limit_contact_cleans">Daily limit: 10 contact cleans</string>
+    <string name="text_this_action_can_not_undo">This action can\'t be undone.</string>
+    <string name="text_daily_merge_limit_reached">Daily merge \nlimit reached</string>
+    <string name="text_merge_limit_reached_description">You’ve used all 10 merges for today. Upgrade to continue merging contacts without limits.</string>
+    <string name="text_clean_limit_reached_description">You’ve used all 10 cleans for today. Upgrade to continue cleaning contacts without limits.</string>
+    <string name="text_search_by_names_and_numbers">Search by names and numbers</string>
+    <string name="text_no_contacts_found">No contact found</string>
+    <string name="text_backup_storage">Backup Storage</string>
+    <string name="text_connect_drive">Connect drive</string>
+    <string name="text_on_drive">On drive</string>
+    <string name="text_on_device">On device</string>
+    <plurals name="text_contacts_backup_info">
+        <item quantity="one">%1$d contact • %2$s</item>
+        <item quantity="other">%1$d contacts • %2$s</item>
+    </plurals>
+    <string name="text_backup_now">Backup now</string>
+    <string name="text_connect_google_drive">Connect Google Drive</string>
+    <string name="text_save_your_backups_and_restore">Save your backups securely and restore them across devices.</string>
+    <string name="text_connect_account">Connect Account</string>
+    <plurals name="text_all_quantities_contacts">
+        <item quantity="one">%1$d Contact</item>
+        <item quantity="other">%1$d Contacts</item>
+    </plurals>
+    <plurals name="text_restore_contacts">
+        <item quantity="one">Restore %1$d contact</item>
+        <item quantity="other">Restore %1$d contacts</item>
+    </plurals>
+    <string name="text_restore_description">Restore contacts to your device?</string>
+    <string name="text_restore_contacts_in_progress">Restore contacts…</string>
+    <string name="text_you_have_restored">You have restored</string>
+    <string name="text_restore_successfully_description">You\'ve restored your contact</string>
+    <plurals name="text_quantity_backups">
+        <item quantity="one">%1$d backup</item>
+        <item quantity="other">%1$d backups</item>
+    </plurals>
+    <string name="text_google_drive">Google Drive</string>
+    <string name="text_switch_account">Switch Account</string>
+    <string name="text_disconnect_drive">Disconnect Drive</string>
+    <string name="text_backup_completed">Backup completed</string>
+    <string name="text_saved_contact_list">Your contact list has been safely saved.</string>
+    <string name="text_switch_google_account">Switch Google Account</string>
+    <string name="text_switch_google_account_description">Future backups will be saved to another account.</string>
+    <string name="text_disconnect_google_account">Disconnect Google Drive</string>
+    <string name="text_disconnect_google_account_description">New backups will be saved on this device.</string>
+    <string name="all_disconnect">Disconnect</string>
+    <plurals name="text_delete_quantities_backup">
+        <item quantity="one">Delete %1$d backup</item>
+        <item quantity="other">Delete %1$d backups</item>
+    </plurals>
+    <string name="text_delete_backup_title">Delete backup</string>
+    <string name="text_delete_backup_confirm_description">Your contacts will be deleted from your drive and device. This process cannot be reversed.</string>
+    <string name="text_backup_deleted">Backup deleted!</string>
+    <string name="text_no_internet_connection">No internet connection</string>
+    <string name="text_check_network_and_try_again">Check your connection and try again.</string>
+    <string name="text_try_again">Try Again</string>
+
+
+    <string name="text_connection_failed_title">Connection failed</string>
+    <string name="text_connection_failed_description">We couldn\'t connect to Google Drive right now. Please try again later.</string>
 </resources>
