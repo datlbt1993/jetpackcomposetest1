@@ -7,9 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,8 +15,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,13 +27,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -46,10 +41,18 @@ import com.example.jecpackcomposeno1.ui.theme.component.AISmartCleanButton
 import com.example.jecpackcomposeno1.ui.theme.component.AppTextStyles
 import com.example.jecpackcomposeno1.ui.theme.component.CommonSpacerHeight
 import com.example.jecpackcomposeno1.ui.theme.component.CommonSpacerWidth
+import com.example.jecpackcomposeno1.ui.theme.permission.manageStorageRationale
+import com.example.jecpackcomposeno1.ui.theme.permission.rememberManageStorageRequester
 
-@Preview
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    photoCount: Int = 0,
+    videoCount: Int = 0,
+    onStorageGranted: () -> Unit = {},
+    onOpenPhotos: () -> Unit = {},
+    onOpenVideos: () -> Unit = {},
+    onOpenTrash: () -> Unit = {},
+) {
     Column(modifier = Modifier.background(color = colorResource(R.color.surface_normal))) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Image(
@@ -63,43 +66,68 @@ fun HomeScreen() {
                     .statusBarsPadding()
                     .padding(bottom = 16.dp)
             ) {
-                ToolbarHome()
+                ToolbarHome(onTrashClick = onOpenTrash)
                 CommonSpacerHeight(12)
                 ViewSmartClean()
             }
         }
         CommonSpacerHeight(12)
-        ManualClean()
-        CommonSpacerHeight(12)
+        ManualClean(
+            photoCount = photoCount,
+            videoCount = videoCount,
+            onStorageGranted = onStorageGranted,
+            onOpenPhotos = onOpenPhotos,
+            onOpenVideos = onOpenVideos
+        )
         SmartTools()
     }
 }
 
 @Composable
-fun ToolbarHome() {
+fun ToolbarHome(
+    isShowTrash: Boolean = false,
+    onBackClick: (() -> Unit)? = null,
+    onTrashClick: (() -> Unit)? = null,
+    title: String? = null,
+) {
     Row(
         modifier = Modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(
-            onClick = { },
-        ) {
-            Icon(
-                modifier = Modifier.size(28.dp),
-                painter = painterResource(id = R.drawable.ic_setting),
-                contentDescription = null
-            )
+        if (onBackClick != null) {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .graphicsLayer { rotationZ = 180f },
+                    painter = painterResource(id = R.drawable.ic_arrow_right),
+                    contentDescription = null,
+                    tint = colorResource(R.color.color_on_surface),
+                )
+            }
+        } else {
+            IconButton(onClick = { }) {
+                Icon(
+                    modifier = Modifier.size(28.dp),
+                    painter = painterResource(id = R.drawable.ic_setting),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                )
+            }
         }
         Text(
-            text = stringResource(R.string.app_name),
+            text = title ?: stringResource(R.string.app_name),
             style = MaterialTheme.typography.headlineMedium,
+            color = colorResource(R.color.color_on_surface),
             modifier = Modifier.weight(1f)
         )
-        IconButton(onClick = {}) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_trash),
-                contentDescription = null,
-            )
+        if (!isShowTrash) {
+            IconButton(onClick = { onTrashClick?.invoke() }) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_trash),
+                    contentDescription = stringResource(R.string.text_trash),
+                )
+            }
         }
         CommonSpacerWidth(int = 12)
     }
@@ -170,7 +198,24 @@ fun ViewSmartClean() {
 }
 
 @Composable
-fun ManualClean() {
+fun ManualClean(
+    photoCount: Int = 0,
+    videoCount: Int = 0,
+    onStorageGranted: () -> Unit = {},
+    onOpenPhotos: () -> Unit = {},
+    onOpenVideos: () -> Unit = {},
+) {
+    val appName = stringResource(R.string.app_name)
+    val allFilesRationale = remember(appName) { manageStorageRationale(appName) }
+    val requestPhotos = rememberManageStorageRequester(
+        rationale = allFilesRationale,
+        onGranted = { onStorageGranted(); onOpenPhotos() },
+    )
+    val requestVideos = rememberManageStorageRequester(
+        rationale = allFilesRationale,
+        onGranted = { onStorageGranted(); onOpenVideos() },
+    )
+
     Column(
         modifier = Modifier
             .padding(12.dp),
@@ -180,7 +225,15 @@ fun ManualClean() {
             modifier = Modifier
                 .fillMaxWidth(),
             text = stringResource(R.string.text_manual_clean),
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
+            color = colorResource(R.color.color_on_surface),
+        )
+        CommonSpacerHeight(int = 4)
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Photos: $photoCount  •  Videos: $videoCount",
+            style = AppTextStyles.Size14Medium,
+            color = colorResource(R.color.color_on_surface_variant_2)
         )
         CommonSpacerHeight(int = 8)
         Row(
@@ -193,14 +246,14 @@ fun ManualClean() {
                 bg = R.drawable.ic_bg_photo_home,
                 icon = R.drawable.ic_photo_home,
                 title = R.string.tv_photos,
-                onClick = {}
+                onClick = requestPhotos
             )
             ItemPhotoOrVideHome(
                 modifier = Modifier.weight(1f),
                 bg = R.drawable.ic_bg_video_home,
                 icon = R.drawable.ic_video_home,
                 title = R.string.tv_videos,
-                onClick = {}
+                onClick = requestVideos
             )
         }
     }
@@ -266,7 +319,8 @@ fun SmartTools() {
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.text_smart_tools),
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
+            color = colorResource(R.color.color_on_surface),
         )
         CommonSpacerHeight(int = 8)
         Column(

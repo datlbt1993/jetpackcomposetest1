@@ -1,9 +1,11 @@
 package com.example.jecpackcomposeno1
 
 import android.annotation.SuppressLint
+import android.graphics.Color as AndroidColor
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
@@ -56,13 +58,39 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.example.jecpackcomposeno1.ui.theme.JetpackComposeNo1Theme
 import com.example.jecpackcomposeno1.ui.theme.screen.MainScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // UI app nền sáng -> ép icon status bar (giờ/pin/wifi) màu tối, không để
+        // dark theme / dynamic color chọn icon trắng khiến nhìn mờ.
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                scrim = AndroidColor.TRANSPARENT,
+                darkScrim = AndroidColor.TRANSPARENT,
+            ),
+            navigationBarStyle = SystemBarStyle.light(
+                scrim = AndroidColor.TRANSPARENT,
+                darkScrim = AndroidColor.TRANSPARENT,
+            ),
+        )
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = true
+            // Ẩn thanh điều hướng khi mở app
+            hide(WindowInsetsCompat.Type.navigationBars())
+            // Vuốt từ cạnh lên -> hiện tạm rồi tự ẩn lại
+            systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+
         setContent {
             JetpackComposeNo1Theme {
                 MainScreen()
