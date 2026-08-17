@@ -48,7 +48,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import coil.compose.AsyncImage
 import coil.decode.VideoFrameDecoder
@@ -56,7 +55,8 @@ import coil.request.ImageRequest
 import coil.request.videoFrameMillis
 import com.example.jecpackcomposeno1.R
 import com.example.jecpackcomposeno1.mvi.CollectEffect
-import com.example.jecpackcomposeno1.navigation.navigateSafe
+import com.example.jecpackcomposeno1.navigation.AppDestination
+import com.example.jecpackcomposeno1.navigation.AppNavigator
 import com.example.jecpackcomposeno1.navigation.stringArg
 import com.example.jecpackcomposeno1.navigation.stringNavArgs
 import com.example.jecpackcomposeno1.ui.theme.component.AppTextStyles
@@ -71,17 +71,14 @@ import com.example.jecpackcomposeno1.ui.theme.screen.home.media.MediaListViewMod
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-fun NavGraphBuilder.listPhotoVideoGraph(navController: NavHostController) {
+fun NavGraphBuilder.listPhotoVideoGraph(navigator: AppNavigator) {
     composable(
         route = HomeRoute.ListPhotoVideo,
         arguments = stringNavArgs(HomeRoute.ArgMediaType),
     ) { backStackEntry ->
         ListPhotoVideoRoute(
             isPhotos = backStackEntry.stringArg(HomeRoute.ArgMediaType) == HomeRoute.MediaPhotos,
-            onBack = { navController.popBackStack() },
-            onOpenVideo = { uri ->
-                navController.navigateSafe(HomeRoute.videoPlayer(uri))
-            },
+            onNavigate = navigator::navigate,
         )
     }
     composable(
@@ -90,7 +87,7 @@ fun NavGraphBuilder.listPhotoVideoGraph(navController: NavHostController) {
     ) { backStackEntry ->
         VideoPlayerScreen(
             videoUri = Uri.decode(backStackEntry.stringArg(HomeRoute.ArgVideoUri)),
-            onBack = { navController.popBackStack() },
+            onBack = { navigator.navigate(AppDestination.Back) },   // màn "câm", chỉ có 1 lối ra
         )
     }
 }
@@ -98,8 +95,7 @@ fun NavGraphBuilder.listPhotoVideoGraph(navController: NavHostController) {
 @Composable
 fun ListPhotoVideoRoute(
     isPhotos: Boolean,
-    onBack: () -> Unit,
-    onOpenVideo: (uri: String) -> Unit,
+    onNavigate: (AppDestination) -> Unit,
 ) {
     val context = LocalContext.current
     val viewModel: MediaListViewModel = hiltViewModel()
@@ -125,7 +121,8 @@ fun ListPhotoVideoRoute(
 
     CollectEffect(viewModel.effect) { effect ->
         when (effect) {
-            is MediaListEffect.NavigateToVideoPlayer -> onOpenVideo(effect.uri)
+            is MediaListEffect.NavigateToVideoPlayer ->
+                onNavigate(AppDestination.VideoPlayer(effect.uri))
             is MediaListEffect.NavigateToPhotoDetail -> {
 
             }
@@ -138,7 +135,7 @@ fun ListPhotoVideoRoute(
     ListPhotoVideo(
         state = state,
         onIntent = viewModel::onIntent,
-        onBack = onBack,
+        onBack = { onNavigate(AppDestination.Back) },
         hasStoragePermission = hasStoragePermission,
     )
 }

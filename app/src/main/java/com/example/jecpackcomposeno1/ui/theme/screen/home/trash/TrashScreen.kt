@@ -47,6 +47,7 @@ import coil.request.ImageRequest
 import coil.request.videoFrameMillis
 import com.example.jecpackcomposeno1.R
 import com.example.jecpackcomposeno1.mvi.CollectEffect
+import com.example.jecpackcomposeno1.navigation.AppDestination
 import com.example.jecpackcomposeno1.ui.theme.component.AppTextStyles
 import com.example.jecpackcomposeno1.ui.theme.component.CommonSpacerHeight
 import com.example.jecpackcomposeno1.ui.theme.data.TrashFile
@@ -54,10 +55,10 @@ import com.example.jecpackcomposeno1.ui.theme.data.VideoType
 import com.example.jecpackcomposeno1.ui.theme.screen.home.ToolbarHome
 import java.io.File
 
-/** Entry gắn NavHost: ViewModel + Effect. MainScreen chỉ truyền onBack. */
+/** Entry gắn NavHost: ViewModel + Effect. NavHost chỉ truyền một cửa [onNavigate]. */
 @Composable
 fun TrashRoute(
-    onBack: () -> Unit,
+    onNavigate: (AppDestination) -> Unit,
 ) {
     val context = LocalContext.current
     val viewModel: TrashViewModel = hiltViewModel()
@@ -78,7 +79,7 @@ fun TrashRoute(
     TrashScreen(
         state = state,
         onIntent = viewModel::onIntent,
-        onBack = onBack,
+        onBack = { onNavigate(AppDestination.Back) },
     )
 }
 

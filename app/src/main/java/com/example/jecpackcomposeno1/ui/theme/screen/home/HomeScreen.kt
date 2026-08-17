@@ -35,20 +35,17 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.example.jecpackcomposeno1.R
+import com.example.jecpackcomposeno1.navigation.AppDestination
 import com.example.jecpackcomposeno1.ui.theme.component.AISmartCleanButton
 import com.example.jecpackcomposeno1.ui.theme.component.AppTextStyles
 import com.example.jecpackcomposeno1.ui.theme.component.CommonSpacerHeight
 import com.example.jecpackcomposeno1.ui.theme.component.CommonSpacerWidth
-import com.example.jecpackcomposeno1.ui.theme.permission.manageStorageRationale
-import com.example.jecpackcomposeno1.ui.theme.permission.rememberManageStorageRequester
 
 @Composable
 fun HomeScreen(
     photoCount: Int = 0,
     videoCount: Int = 0,
-    onOpenPhotos: () -> Unit = {},
-    onOpenVideos: () -> Unit = {},
-    onOpenTrash: () -> Unit = {},
+    onNavigate: (AppDestination) -> Unit = {},
 ) {
     Column(modifier = Modifier.background(color = colorResource(R.color.surface_normal))) {
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -63,7 +60,7 @@ fun HomeScreen(
                     .statusBarsPadding()
                     .padding(bottom = 16.dp)
             ) {
-                ToolbarHome(onTrashClick = onOpenTrash)
+                ToolbarHome(onTrashClick = { onNavigate(AppDestination.Trash) })
                 CommonSpacerHeight(12)
                 ViewSmartClean()
             }
@@ -72,8 +69,7 @@ fun HomeScreen(
         ManualClean(
             photoCount = photoCount,
             videoCount = videoCount,
-            onOpenPhotos = onOpenPhotos,
-            onOpenVideos = onOpenVideos
+            onNavigate = onNavigate,
         )
         HomeBrandContent()
     }
@@ -197,8 +193,7 @@ fun ViewSmartClean() {
 fun ManualClean(
     photoCount: Int = 0,
     videoCount: Int = 0,
-    onOpenPhotos: () -> Unit = {},
-    onOpenVideos: () -> Unit = {},
+    onNavigate: (AppDestination) -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -230,14 +225,14 @@ fun ManualClean(
                 bg = R.drawable.ic_bg_photo_home,
                 icon = R.drawable.ic_photo_home,
                 title = R.string.tv_photos,
-                onClick = onOpenPhotos
+                onClick = { onNavigate(AppDestination.Photos) }
             )
             ItemPhotoOrVideHome(
                 modifier = Modifier.weight(1f),
                 bg = R.drawable.ic_bg_video_home,
                 icon = R.drawable.ic_video_home,
                 title = R.string.tv_videos,
-                onClick = onOpenVideos
+                onClick = { onNavigate(AppDestination.Videos) }
             )
         }
     }

@@ -25,9 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -36,7 +33,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.jecpackcomposeno1.MainSharedViewModel
 import com.example.jecpackcomposeno1.R
-import com.example.jecpackcomposeno1.navigation.navigateTab
+import com.example.jecpackcomposeno1.navigation.AppDestination
+import com.example.jecpackcomposeno1.navigation.AppNavigator
 import com.example.jecpackcomposeno1.ui.theme.component.AppTextStyles
 import com.example.jecpackcomposeno1.ui.theme.screen.compress.CompressScreen
 import com.example.jecpackcomposeno1.ui.theme.screen.home.HomeNavHost
@@ -48,6 +46,11 @@ fun MainScreen() {
     val navController = rememberNavController()
     val homeNavController = rememberNavController()
     val sharedViewModel: MainSharedViewModel = hiltViewModel()
+
+    // Một navigator duy nhất cho cả app: UI chỉ nói "đi đâu", không đụng NavController.
+    val navigator = remember(navController, homeNavController) {
+        AppNavigator(rootNav = navController, homeNav = homeNavController)
+    }
 
 
     LifecycleStartEffect(sharedViewModel) {
@@ -64,7 +67,7 @@ fun MainScreen() {
                 CustomBottomBar(
                     currentRoute = currentRoute,
                     onTabClick = { tab ->
-                        navController.navigateTab(tab.route)
+                        navigator.navigate(tab.destination)
                     }
                 )
             }
@@ -79,7 +82,7 @@ fun MainScreen() {
         ) {
             composable(BottomTab.Home.route) {
                 HomeNavHost(
-                    navController = homeNavController,
+                    navigator = navigator,
                     sharedViewModel = sharedViewModel,
                 )
             }
@@ -92,11 +95,20 @@ fun MainScreen() {
 sealed class BottomTab(
     val route: String,
     val label: Int,
-    val icon: Int
+    val icon: Int,
+    val destination: AppDestination,
 ) {
-    data object Home : BottomTab(HomeRoute.Home, R.string.all_home, R.drawable.ic_home)
-    data object Swipe : BottomTab(HomeRoute.Swipe, R.string.all_swipe, R.drawable.ic_file)
-    data object Compress : BottomTab(HomeRoute.Compress, R.string.tv_compress, R.drawable.ic_setting)
+    data object Home : BottomTab(
+        HomeRoute.Home, R.string.all_home, R.drawable.ic_home, AppDestination.TabHome
+    )
+
+    data object Swipe : BottomTab(
+        HomeRoute.Swipe, R.string.all_swipe, R.drawable.ic_file, AppDestination.TabSwipe
+    )
+
+    data object Compress : BottomTab(
+        HomeRoute.Compress, R.string.tv_compress, R.drawable.ic_setting, AppDestination.TabCompress
+    )
 }
 
 private val bottomTabs = listOf(BottomTab.Home, BottomTab.Swipe, BottomTab.Compress)
