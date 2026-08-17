@@ -38,7 +38,6 @@ import com.example.jecpackcomposeno1.navigation.AppNavigator
 import com.example.jecpackcomposeno1.ui.theme.component.AppTextStyles
 import com.example.jecpackcomposeno1.ui.theme.screen.compress.CompressScreen
 import com.example.jecpackcomposeno1.ui.theme.screen.home.HomeNavHost
-import com.example.jecpackcomposeno1.ui.theme.screen.home.HomeRoute
 import com.example.jecpackcomposeno1.ui.theme.screen.swipe.SwipeScreen
 
 @Composable
@@ -99,15 +98,15 @@ sealed class BottomTab(
     val destination: AppDestination,
 ) {
     data object Home : BottomTab(
-        HomeRoute.Home, R.string.all_home, R.drawable.ic_home, AppDestination.TabHome
+        MainRoute.Home, R.string.all_home, R.drawable.ic_home, AppDestination.TabHome
     )
 
     data object Swipe : BottomTab(
-        HomeRoute.Swipe, R.string.all_swipe, R.drawable.ic_file, AppDestination.TabSwipe
+        MainRoute.Swipe, R.string.all_swipe, R.drawable.ic_file, AppDestination.TabSwipe
     )
 
     data object Compress : BottomTab(
-        HomeRoute.Compress, R.string.tv_compress, R.drawable.ic_setting, AppDestination.TabCompress
+        MainRoute.Compress, R.string.tv_compress, R.drawable.ic_setting, AppDestination.TabCompress
     )
 }
 
@@ -125,7 +124,7 @@ private fun shouldShowBottomBar(currentRoute: String?, homeRoute: String?): Bool
         return true
     }
     return currentRoute == BottomTab.Home.route &&
-        (homeRoute == null || homeRoute == HomeRoute.Main)
+        (homeRoute == null || homeRoute == MainRoute.Main)
 }
 
 @Composable

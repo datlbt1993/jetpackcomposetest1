@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
-import com.example.jecpackcomposeno1.ui.theme.screen.home.HomeRoute
+import com.example.jecpackcomposeno1.ui.theme.screen.MainRoute
 
 class AppNavigator(
     private val rootNav: NavHostController,
@@ -18,20 +18,20 @@ class AppNavigator(
 
     fun navigate(dest: AppDestination) {
         when (dest) {
-            AppDestination.TabHome -> rootNav.navigateTab(HomeRoute.Home)
-            AppDestination.TabSwipe -> rootNav.navigateTab(HomeRoute.Swipe)
-            AppDestination.TabCompress -> rootNav.navigateTab(HomeRoute.Compress)
+            AppDestination.TabHome -> rootNav.navigateTab(MainRoute.Home)
+            AppDestination.TabSwipe -> rootNav.navigateTab(MainRoute.Swipe)
+            AppDestination.TabCompress -> rootNav.navigateTab(MainRoute.Compress)
 
             AppDestination.Photos -> openWithStorageGate(
-                HomeRoute.listPhotoVideo(HomeRoute.MediaPhotos),
+                MainRoute.listPhotoVideo(MainRoute.MediaPhotos),
             )
             AppDestination.Videos -> openWithStorageGate(
-                HomeRoute.listPhotoVideo(HomeRoute.MediaVideos),
+                MainRoute.listPhotoVideo(MainRoute.MediaVideos),
             )
-            AppDestination.Trash -> homeNav.navigateSafe(HomeRoute.Trash)
+            AppDestination.Trash -> homeNav.navigateSafe(MainRoute.Trash)
 
             is AppDestination.VideoPlayer -> homeNav.navigateSafe(
-                HomeRoute.videoPlayer(dest.uri),
+                MainRoute.videoPlayer(dest.uri),
             )
 
             AppDestination.Back -> navigateBack()
@@ -55,7 +55,7 @@ class AppNavigator(
      * lặng lẽ pop màn trong tab Home.
      */
     private fun navigateBack() {
-        val onHomeTab = rootNav.currentDestination?.route == HomeRoute.Home
+        val onHomeTab = rootNav.currentDestination?.route == MainRoute.Home
         if (onHomeTab && homeNav.previousBackStackEntry != null) {
             homeNav.popBackStack()
         } else {

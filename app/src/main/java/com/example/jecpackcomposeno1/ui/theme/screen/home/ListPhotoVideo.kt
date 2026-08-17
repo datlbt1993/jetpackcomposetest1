@@ -40,7 +40,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
@@ -64,6 +63,7 @@ import com.example.jecpackcomposeno1.ui.theme.component.CommonSpacerHeight
 import com.example.jecpackcomposeno1.ui.theme.component.hasManageExternalStoragePermission
 import com.example.jecpackcomposeno1.ui.theme.data.ItemFile
 import com.example.jecpackcomposeno1.ui.theme.data.VideoFile
+import com.example.jecpackcomposeno1.ui.theme.screen.MainRoute
 import com.example.jecpackcomposeno1.ui.theme.screen.home.media.MediaListEffect
 import com.example.jecpackcomposeno1.ui.theme.screen.home.media.MediaListIntent
 import com.example.jecpackcomposeno1.ui.theme.screen.home.media.MediaListState
@@ -73,21 +73,21 @@ import java.util.concurrent.TimeUnit
 
 fun NavGraphBuilder.listPhotoVideoGraph(navigator: AppNavigator) {
     composable(
-        route = HomeRoute.ListPhotoVideo,
-        arguments = stringNavArgs(HomeRoute.ArgMediaType),
+        route = MainRoute.ListPhotoVideo,
+        arguments = stringNavArgs(MainRoute.ArgMediaType),
     ) { backStackEntry ->
         ListPhotoVideoRoute(
-            isPhotos = backStackEntry.stringArg(HomeRoute.ArgMediaType) == HomeRoute.MediaPhotos,
+            isPhotos = backStackEntry.stringArg(MainRoute.ArgMediaType) == MainRoute.MediaPhotos,
             onNavigate = navigator::navigate,
         )
     }
     composable(
-        route = HomeRoute.VideoPlayer,
-        arguments = stringNavArgs(HomeRoute.ArgVideoUri),
+        route = MainRoute.VideoPlayer,
+        arguments = stringNavArgs(MainRoute.ArgVideoUri),
     ) { backStackEntry ->
         VideoPlayerScreen(
-            videoUri = Uri.decode(backStackEntry.stringArg(HomeRoute.ArgVideoUri)),
-            onBack = { navigator.navigate(AppDestination.Back) },   // màn "câm", chỉ có 1 lối ra
+            videoUri = Uri.decode(backStackEntry.stringArg(MainRoute.ArgVideoUri)),
+            onBack = { navigator.navigate(AppDestination.Back) },
         )
     }
 }

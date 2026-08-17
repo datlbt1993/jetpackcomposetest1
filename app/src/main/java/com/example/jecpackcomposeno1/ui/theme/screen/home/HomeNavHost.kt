@@ -10,11 +10,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.jecpackcomposeno1.MainSharedViewModel
 import com.example.jecpackcomposeno1.R
-import com.example.jecpackcomposeno1.navigation.AppDestination
 import com.example.jecpackcomposeno1.navigation.AppNavigator
 import com.example.jecpackcomposeno1.navigation.NavAnim
 import com.example.jecpackcomposeno1.ui.theme.permission.manageStorageRationale
 import com.example.jecpackcomposeno1.ui.theme.permission.rememberManageStorageRequester
+import com.example.jecpackcomposeno1.ui.theme.screen.MainRoute
 import com.example.jecpackcomposeno1.ui.theme.screen.home.trash.TrashRoute
 
 @Composable
@@ -41,13 +41,13 @@ fun HomeNavHost(
 
     NavHost(
         navController = navigator.homeNav,
-        startDestination = HomeRoute.Main,
+        startDestination = MainRoute.Main,
         enterTransition = NavAnim.enter,
         exitTransition = NavAnim.exit,
         popEnterTransition = NavAnim.popEnter,
         popExitTransition = NavAnim.popExit,
     ) {
-        composable(HomeRoute.Main) {
+        composable(MainRoute.Main) {
             HomeScreen(
                 photoCount = photos.size,
                 videoCount = videos.size,
@@ -55,7 +55,7 @@ fun HomeNavHost(
             )
         }
         listPhotoVideoGraph(navigator)
-        composable(HomeRoute.Trash) {
+        composable(MainRoute.Trash) {
             TrashRoute(onNavigate = navigator::navigate)
         }
     }

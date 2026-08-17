@@ -1,8 +1,8 @@
-package com.example.jecpackcomposeno1.ui.theme.screen.home
+package com.example.jecpackcomposeno1.ui.theme.screen
 
 import android.net.Uri
 
-object HomeRoute {
+object MainRoute {
     const val Main = "home_main"
     const val Home = "home"
     const val Swipe = "swipe"
