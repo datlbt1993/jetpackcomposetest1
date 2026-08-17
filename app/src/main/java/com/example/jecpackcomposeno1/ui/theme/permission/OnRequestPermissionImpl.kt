@@ -59,8 +59,8 @@ val Permission.supportsRetry: Boolean
 
 val Permission.showRationaleFirst: Boolean
     get() = when (this) {
-        Permission.Contact -> false      // Contact: KHÔNG hiện dialog giải thích, bung popup luôn
-        else -> true                     // Storage/Calendar...: CÓ hiện dialog giải thích trước
+        Permission.Contact -> false
+        else -> true
     }
 
 @HiltViewModel
@@ -74,13 +74,8 @@ class PermissionViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<PermissionUiState>(PermissionUiState.Idle)
     val uiState: StateFlow<PermissionUiState> = _uiState.asStateFlow()
-
-    // Bộ đếm IN-FLOW (transient) — giữ trong ViewModel, KHÔNG cần prefs.
-    // Sống qua config change (vì ở ViewModel), reset mỗi khi bắt đầu flow mới.
     private val inFlowDenyCount = mutableMapOf<Permission, Int>()
 
-    // StateFlow conflate giá trị bằng nhau -> LaunchSystem lần 2 (retry) sẽ KHÔNG emit.
-    // requestId làm cho mỗi lần yêu cầu là một value khác nhau.
     private var requestId = 0
 
     // Đang chờ user quay lại từ màn Settings hệ thống
@@ -141,7 +136,6 @@ class PermissionViewModel @Inject constructor(
             return
         }
 
-        // Từ chối
         incrementDenied(permission)                          // bộ đếm bền ++
         val inFlow = (inFlowDenyCount[permission] ?: 0) + 1   // bộ đếm in-flow ++
         inFlowDenyCount[permission] = inFlow
@@ -191,32 +185,13 @@ sealed interface PermissionUiState {
 }
 
 data class RationaleUi(
-    val image: Int,                            // R.drawable... (ảnh minh họa trong dialog)
-    val title: Int,                            // R.string... (tiêu đề)
-    val description: Int,                      // R.string... (mô tả)
-    val buttonText: Int,                       // R.string... (chữ trên nút, vd "Allow")
-    val titleArgs: List<Any> = emptyList(),    // format args cho title, vd app_name cho "%s"
+    val image: Int,
+    val title: Int,
+    val description: Int,
+    val buttonText: Int,
+    val titleArgs: List<Any> = emptyList(),
 )
 
-/**
- * Cài toàn bộ flow xin quyền vào cây Compose và trả về hàm để BẮN flow đó.
- *
- * Composable này tự vẽ các dialog (rationale / go-to-settings) khi cần, còn UI kích hoạt
- * (nút, card, item...) là của bạn — chỉ cần gọi lambda được trả về trong `onClick`.
- *
- * ```
- * val requestStorage = rememberPermissionRequester(
- *     permission = Permission.Storage,
- *     rationale  = RationaleUi(...),
- *     onGranted  = { /* điều hướng sang màn Photos */ }
- * )
- * ItemPhotoOrVideHome(onClick = requestStorage, ...)
- * ```
- *
- * @param scopeKey phân biệt các flow độc lập trong cùng một screen. Mặc định theo
- *   [Permission.key], nên 2 chỗ cùng xin Storage sẽ DÙNG CHUNG state — truyền key khác
- *   nhau nếu muốn tách riêng.
- */
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun rememberPermissionRequester(
@@ -232,8 +207,6 @@ fun rememberPermissionRequester(
     val permissionState = rememberMultiplePermissionsState(
         permissions = permission.manifestPermissions
     ) { _ ->
-        // Không tin map kết quả của Accompanist: tự check lại theo rule của app
-        // (vd Storage chỉ cần IMAGES hoặc VIDEO là đủ).
         viewModel.onSystemResult(permission, context.isPermissionGranted(permission))
     }
 
@@ -372,7 +345,6 @@ fun GoToSettingsDialog(
     }
 }
 
-// Một dòng bước: [số] + mô tả
 @Composable
 private fun SettingStep(number: String, text: String) {
     Row(

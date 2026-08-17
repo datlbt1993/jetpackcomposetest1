@@ -1,5 +1,6 @@
 package com.example.jecpackcomposeno1.ui.theme.screen.home.trash
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,22 +27,60 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import coil.decode.VideoFrameDecoder
+import coil.request.ImageRequest
+import coil.request.videoFrameMillis
 import com.example.jecpackcomposeno1.R
+import com.example.jecpackcomposeno1.mvi.CollectEffect
 import com.example.jecpackcomposeno1.ui.theme.component.AppTextStyles
 import com.example.jecpackcomposeno1.ui.theme.component.CommonSpacerHeight
 import com.example.jecpackcomposeno1.ui.theme.data.TrashFile
+import com.example.jecpackcomposeno1.ui.theme.data.VideoType
 import com.example.jecpackcomposeno1.ui.theme.screen.home.ToolbarHome
 import java.io.File
+
+/** Entry gắn NavHost: ViewModel + Effect. MainScreen chỉ truyền onBack. */
+@Composable
+fun TrashRoute(
+    onBack: () -> Unit,
+) {
+    val context = LocalContext.current
+    val viewModel: TrashViewModel = hiltViewModel()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    CollectEffect(viewModel.effect) {
+        viewModel.onIntent(TrashIntent.Load)
+    }
+
+    CollectEffect(viewModel.effect) { effect ->
+        when (effect) {
+            is TrashEffect.ShowMessage -> {
+                Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    TrashScreen(
+        state = state,
+        onIntent = viewModel::onIntent,
+        onBack = onBack,
+    )
+}
 
 @Composable
 fun TrashScreen(
@@ -50,7 +89,6 @@ fun TrashScreen(
     onBack: () -> Unit,
 ) {
     BackHandler(onBack = onBack)
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,17 +107,6 @@ fun TrashScreen(
                 .padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = if (state.selectedCount > 0) {
-                    "${state.selectedCount}/${state.items.size} selected"
-                } else {
-                    "${state.items.size} items • auto-delete after 30 days"
-                },
-                style = AppTextStyles.Size14Medium,
-                color = colorResource(R.color.color_on_surface),
-                modifier = Modifier.weight(1f),
-            )
-
             if (state.items.isNotEmpty()) {
                 TextButton(onClick = { onIntent(TrashIntent.EmptyTrash) }) {
                     Text(
@@ -117,7 +144,6 @@ fun TrashScreen(
         }
 
         CommonSpacerHeight(8)
-
         Box(modifier = Modifier.weight(1f)) {
             when {
                 state.isLoading && state.items.isEmpty() -> {
@@ -127,12 +153,28 @@ fun TrashScreen(
                 }
 
                 state.items.isEmpty() -> {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = stringResource(R.string.swipe_trash_empty),
-                            style = AppTextStyles.Size14Medium,
-                            color = colorResource(R.color.color_on_surface_variant_2),
-                        )
+                    Row() {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = stringResource(R.string.swipe_trash_empty),
+                                style = AppTextStyles.Size14Medium,
+                                color = colorResource(R.color.color_on_surface_variant_2),
+                            )
+                        }
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = stringResource(R.string.swipe_trash_empty),
+                                style = AppTextStyles.Size14Medium,
+                                color = colorResource(R.color.color_on_surface_variant_2),
+                            )
+                        }
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = stringResource(R.string.swipe_trash_empty),
+                                style = AppTextStyles.Size14Medium,
+                                color = colorResource(R.color.color_on_surface_variant_2),
+                            )
+                        }
                     }
                 }
 
@@ -182,7 +224,7 @@ fun TrashScreen(
             ) {
                 Text(
                     text = stringResource(R.string.text_delete_permanently) +
-                        " (${state.selectedCount})",
+                            " (${state.selectedCount})",
                     color = Color.White,
                     style = AppTextStyles.Size16SemiBold,
                 )
@@ -197,6 +239,19 @@ private fun TrashGridItem(
     selected: Boolean,
     onToggle: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val file = File(item.pathFile)
+    val imageModel = ImageRequest.Builder(context)
+        .data(file)
+        .apply {
+            if (item.fileType is VideoType) {
+                decoderFactory(VideoFrameDecoder.Factory())
+                videoFrameMillis(1_000)
+            }
+        }
+        .crossfade(true)
+        .build()
+
     Box(
         modifier = Modifier
             .aspectRatio(1f)
@@ -205,7 +260,7 @@ private fun TrashGridItem(
             .clickable(onClick = onToggle),
     ) {
         AsyncImage(
-            model = File(item.pathFile),
+            model = imageModel,
             contentDescription = item.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),

@@ -4,10 +4,7 @@ import android.Manifest
 import android.os.Build
 
 sealed class Permission {
-    /** Key dùng làm id (đặt tên ViewModel scope, log, prefs...) */
     abstract val key: String
-
-    /** Danh sách runtime permission thật sẽ đưa cho popup hệ thống, đã tính theo API level. */
     abstract val manifestPermissions: List<String>
 
     data object Notification : Permission() {
@@ -40,16 +37,6 @@ sealed class Permission {
             }
     }
 
-    /**
-     * MANAGE_EXTERNAL_STORAGE KHÔNG phải runtime permission — không xin qua popup được,
-     * phải mở Intent ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION (Android 11+).
-     *
-     * Đừng đưa quyền này vào [rememberPermissionRequester] — dùng
-     * [rememberManageStorageRequester] thay thế.
-     *
-     * manifestPermissions chỉ có giá trị trên API < 30 (quyền chưa tồn tại), khi đó
-     * READ_EXTERNAL_STORAGE runtime đã cho toàn quyền đọc storage.
-     */
     data object ManageExternalStorage : Permission() {
         override val key = "android.permission.MANAGE_EXTERNAL_STORAGE"
         override val manifestPermissions: List<String>

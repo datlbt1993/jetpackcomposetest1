@@ -1,0 +1,12 @@
+Clone app mới (white-label):
+1. Copy folder này thành: app/src/<tenBrand>/
+2. Trong app/build.gradle.kts thêm:
+     create("tenBrand") {
+         dimension = "brand"
+         applicationId = "com.your.company.tenbrand"
+         resValue("string", "app_name", "Ten Brand")
+     }
+3. Thay icon trong res/mipmap-* (giữ nguyên tên: ic_launcher, ic_launcher_round, ...)
+4. Sync → Build Variants → <tenBrand>Debug → Run
+
+LƯU Ý: KHÔNG đổi android.namespace / package code — chỉ đổi applicationId.

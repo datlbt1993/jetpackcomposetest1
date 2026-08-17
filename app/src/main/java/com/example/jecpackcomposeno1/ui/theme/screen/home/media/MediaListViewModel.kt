@@ -1,22 +1,17 @@
 package com.example.jecpackcomposeno1.ui.theme.screen.home.media
 
-import androidx.lifecycle.viewModelScope
 import com.example.jecpackcomposeno1.mvi.MviViewModel
 import com.example.jecpackcomposeno1.ui.theme.data.ItemFile
 import com.example.jecpackcomposeno1.ui.theme.data.VideoFile
 import com.example.jecpackcomposeno1.ui.theme.domain.repository.StorageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MediaListViewModel @Inject constructor(
     private val storageRepository: StorageRepository,
 ) : MviViewModel<MediaListState, MediaListIntent, MediaListEffect>(MediaListState()) {
-
-    private var loadJob: Job? = null
 
     override fun handleIntent(intent: MediaListIntent) {
         when (intent) {
@@ -93,9 +88,10 @@ class MediaListViewModel @Inject constructor(
     }
 
     private fun loadMedia() {
-        loadJob?.cancel()
-        loadJob = viewModelScope.launch {
-            setState { copy(isLoading = true, error = null) }
+        launchExclusive(
+            onLoading = { setState { copy(isLoading = true, error = null) } },
+            onError = { setState { copy(isLoading = false, error = it.message) } },
+        ) {
             val isPhotos = uiState.value.isPhotos
             val flow = if (isPhotos) {
                 storageRepository.fetchPhotos()

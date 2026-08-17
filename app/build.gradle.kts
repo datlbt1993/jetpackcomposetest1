@@ -12,13 +12,27 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.jecpackcomposeno1"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    flavorDimensions += "brand"
+    productFlavors {
+        create("aicleaner") {
+            dimension = "brand"
+            isDefault = true
+            applicationId = "com.example.jecpackcomposeno1"
+            versionCode = 1          // tăng khi release aicleaner
+            versionName = "1.0.0"
+            resValue("string", "app_name", "AI Cleaner")
+        }
+        create("trusted") {
+            dimension = "brand"
+            applicationId = "com.example.photoclean"
+            versionCode = 1          // tăng khi release trusted
+            versionName = "1.0.0"
+            resValue("string", "app_name", "trusted Clean")
+        }
     }
 
     buildTypes {
@@ -36,6 +50,8 @@ android {
     }
     buildFeatures {
         compose = true
+        // AGP 9: bắt buộc bật khi dùng resValue() trong productFlavors / defaultConfig
+        resValues = true
     }
 }
 

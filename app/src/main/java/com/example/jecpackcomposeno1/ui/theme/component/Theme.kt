@@ -1,4 +1,4 @@
-package com.example.jecpackcomposeno1.ui.theme
+package com.example.jecpackcomposeno1.ui.theme.component
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

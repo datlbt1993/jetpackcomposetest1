@@ -24,7 +24,6 @@ fun NavController.navigateSafe(
  * Dùng cho bottom navigation.
  */
 fun NavController.navigateTab(route: String) {
-    // Không cần navigateSafe ở đây vì tab dùng launchSingleTop rồi
     navigate(route) {
         popUpTo(graph.findStartDestination().id) {
             saveState = true          // lưu state tab bị rời

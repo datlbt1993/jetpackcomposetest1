@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,7 +46,6 @@ import com.example.jecpackcomposeno1.ui.theme.permission.rememberManageStorageRe
 fun HomeScreen(
     photoCount: Int = 0,
     videoCount: Int = 0,
-    onStorageGranted: () -> Unit = {},
     onOpenPhotos: () -> Unit = {},
     onOpenVideos: () -> Unit = {},
     onOpenTrash: () -> Unit = {},
@@ -75,11 +72,10 @@ fun HomeScreen(
         ManualClean(
             photoCount = photoCount,
             videoCount = videoCount,
-            onStorageGranted = onStorageGranted,
             onOpenPhotos = onOpenPhotos,
             onOpenVideos = onOpenVideos
         )
-        SmartTools()
+        HomeBrandContent()
     }
 }
 
@@ -111,7 +107,7 @@ fun ToolbarHome(
                     modifier = Modifier.size(28.dp),
                     painter = painterResource(id = R.drawable.ic_setting),
                     contentDescription = null,
-                    tint = Color.Unspecified,
+                    tint = colorResource(R.color.color_on_surface),
                 )
             }
         }
@@ -201,21 +197,9 @@ fun ViewSmartClean() {
 fun ManualClean(
     photoCount: Int = 0,
     videoCount: Int = 0,
-    onStorageGranted: () -> Unit = {},
     onOpenPhotos: () -> Unit = {},
     onOpenVideos: () -> Unit = {},
 ) {
-    val appName = stringResource(R.string.app_name)
-    val allFilesRationale = remember(appName) { manageStorageRationale(appName) }
-    val requestPhotos = rememberManageStorageRequester(
-        rationale = allFilesRationale,
-        onGranted = { onStorageGranted(); onOpenPhotos() },
-    )
-    val requestVideos = rememberManageStorageRequester(
-        rationale = allFilesRationale,
-        onGranted = { onStorageGranted(); onOpenVideos() },
-    )
-
     Column(
         modifier = Modifier
             .padding(12.dp),
@@ -246,14 +230,14 @@ fun ManualClean(
                 bg = R.drawable.ic_bg_photo_home,
                 icon = R.drawable.ic_photo_home,
                 title = R.string.tv_photos,
-                onClick = requestPhotos
+                onClick = onOpenPhotos
             )
             ItemPhotoOrVideHome(
                 modifier = Modifier.weight(1f),
                 bg = R.drawable.ic_bg_video_home,
                 icon = R.drawable.ic_video_home,
                 title = R.string.tv_videos,
-                onClick = requestVideos
+                onClick = onOpenVideos
             )
         }
     }
@@ -309,89 +293,5 @@ private fun ItemPhotoOrVideHome(
         }
     }
 }
-
-@Composable
-fun SmartTools() {
-    Column(
-        modifier = Modifier.padding(12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.text_smart_tools),
-            style = MaterialTheme.typography.headlineSmall,
-            color = colorResource(R.color.color_on_surface),
-        )
-        CommonSpacerHeight(int = 8)
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            ButtonSmartTools(
-                onClick = {},
-                image = R.drawable.ic_smart_large_old_file,
-                text = R.string.text_large_and_old_files
-            )
-            CommonSpacerHeight(int = 8)
-            ButtonSmartTools(
-                onClick = {},
-                image = R.drawable.ic_smart_calendar,
-                text = R.string.text_calendar_events
-            )
-            CommonSpacerHeight(int = 8)
-            ButtonSmartTools(
-                onClick = {},
-                image = R.drawable.ic_smart_contact,
-                text = R.string.text_all_contacts
-            )
-        }
-    }
-}
-
-@Composable
-fun ButtonSmartTools(
-    onClick: () -> Unit,
-    image: Int,
-    text: Int
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(percent = 12))
-            .background(colorResource(R.color.color_F4F6F8))
-            .clickable(
-                interactionSource = interactionSource,
-                indication = ripple(color = colorResource(R.color.color_on_surface_variant_2)),
-                onClick = onClick
-            )
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            modifier = Modifier.size(32.dp),
-            painter = painterResource(image),
-            contentDescription = null
-        )
-        CommonSpacerWidth(10)
-        Text(
-            text = stringResource(text),
-            style = AppTextStyles.Size16SemiBold,
-            color = colorResource(R.color.black),
-            modifier = Modifier.weight(1f)
-        )
-        Icon(
-            painter = painterResource(R.drawable.ic_arrow_right),
-            contentDescription = null,
-            tint = colorResource(R.color.color_on_surface_variant_3),
-            modifier = Modifier.size(24.dp)
-        )
-    }
-}
-
-
 
 

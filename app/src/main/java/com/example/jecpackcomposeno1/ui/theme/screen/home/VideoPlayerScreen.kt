@@ -29,7 +29,6 @@ fun VideoPlayerScreen(
     onBack: () -> Unit,
 ) {
     BackHandler(onBack = onBack)
-
     val context = LocalContext.current
     val exoPlayer = remember(videoUri) {
         ExoPlayer.Builder(context).build().apply {
@@ -48,7 +47,6 @@ fun VideoPlayerScreen(
             .fillMaxSize()
             .background(Color.Black)
     ) {
-        // Compose-native player UI (ContentFrame + controls) — không cần AndroidView
         Player(
             player = exoPlayer,
             modifier = Modifier.fillMaxSize(),

@@ -3,6 +3,7 @@ package com.example.jecpackcomposeno1.mvi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,12 +38,13 @@ abstract class MviViewModel<STATE, INTENT, EFFECT>(
         viewModelScope.launch { _effect.send(effect) }
     }
 
+    /** Job một-shot (delete, empty trash…). Không hủy job đang collect. */
     protected fun launchTask(
         onLoading: () -> Unit = {},
         onError: (Throwable) -> Unit = {},
         block: suspend () -> Unit,
-    ) {
-        viewModelScope.launch {
+    ): Job {
+        return viewModelScope.launch {
             onLoading()
             try {
                 block()
@@ -52,5 +54,21 @@ abstract class MviViewModel<STATE, INTENT, EFFECT>(
                 onError(e)
             }
         }
+    }
+
+    /**
+     * Chỉ một collect/load chạy tại một thời điểm (Init/Refresh).
+     * Gọi lại sẽ cancel job trước — tránh 2 Flow MediaStore chồng nhau.
+     */
+    private var exclusiveJob: Job? = null
+
+    protected fun launchExclusive(
+        onLoading: () -> Unit = {},
+        onError: (Throwable) -> Unit = {},
+        block: suspend () -> Unit,
+    ): Job {
+        exclusiveJob?.cancel()
+        exclusiveJob = launchTask(onLoading, onError, block)
+        return exclusiveJob!!
     }
 }

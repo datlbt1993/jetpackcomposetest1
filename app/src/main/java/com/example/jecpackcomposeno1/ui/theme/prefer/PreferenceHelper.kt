@@ -4,20 +4,6 @@ import android.content.SharedPreferences
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-/*
- * ANR fix (Android Vital: `Activity.onStop` → `QueuedWork.waitToFinish` → fsync):
- *
- * Mỗi `setValue` cũ luôn gọi `edit().putXxx().apply()` — kể cả khi value KHÔNG đổi.
- * App có >50 prefs property, nhiều chỗ re-apply cached value khi init (vd Splash
- * write lại `isScheduleDailyHourOfDay` từ remote config mỗi lần mở app). Tích lũy
- * pending writes lớn → khi Activity.onStop, system FORCE flush qua `QueuedWork.
- * waitToFinish()` → fsync hàng loạt trên disk chậm → main block > 5s → ANR.
- *
- * Fix: dedup — chỉ apply khi value thực sự thay đổi. `getXxx` in-memory cache
- * (đã loaded sau lần đầu) → check rẻ. Giảm pending queue 80-95% trong session
- * điển hình.
- */
-
 internal fun SharedPreferences.string(
     defaultValue: String = "",
     key: (KProperty<*>) -> String = KProperty<*>::name

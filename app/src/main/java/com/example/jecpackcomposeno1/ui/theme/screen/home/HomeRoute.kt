@@ -4,8 +4,14 @@ import android.net.Uri
 
 object HomeRoute {
     const val Main = "home_main"
-    const val ListPhotoVideo = "list_photo_video/{mediaType}"
-    const val VideoPlayer = "video_player/{videoUri}"
+    const val Home = "home"
+    const val Swipe = "swipe"
+    const val Compress = "compress"
+    const val ArgMediaType = "mediaType"
+    const val ArgVideoUri = "videoUri"
+
+    const val ListPhotoVideo = "list_photo_video/{$ArgMediaType}"
+    const val VideoPlayer = "video_player/{$ArgVideoUri}"
     const val Trash = "trash"
 
     const val MediaPhotos = "photos"

@@ -29,7 +29,6 @@ fun AISmartCleanButton(
         onClick = onClick,
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-        shape = RoundedCornerShape(percent = 100),
         modifier = modifier
             .fillMaxWidth()
             .background(

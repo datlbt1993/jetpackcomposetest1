@@ -1,20 +1,16 @@
 package com.example.jecpackcomposeno1
 
-import android.annotation.SuppressLint
 import android.graphics.Color as AndroidColor
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,7 +21,6 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,7 +38,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,21 +49,18 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.example.jecpackcomposeno1.ui.theme.JetpackComposeNo1Theme
+import com.example.jecpackcomposeno1.ui.theme.component.JetpackComposeNo1Theme
 import com.example.jecpackcomposeno1.ui.theme.screen.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // UI app nền sáng -> ép icon status bar (giờ/pin/wifi) màu tối, không để
-        // dark theme / dynamic color chọn icon trắng khiến nhìn mờ.
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
                 scrim = AndroidColor.TRANSPARENT,
@@ -90,57 +81,11 @@ class MainActivity : ComponentActivity() {
             systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
-
         setContent {
             JetpackComposeNo1Theme {
                 MainScreen()
             }
         }
-    }
-}
-
-@SuppressLint("UnrememberedMutableState")
-@Composable
-fun LoginScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        var email by rememberSaveable {
-            mutableStateOf("")
-        }
-        Email(email) {
-            email = it
-        }
-        Button(onClick = {
-            email = ""
-        }) {
-            Text(text = "Click me")
-        }
-    }
-}
-
-@Composable
-fun Email(email: String, onEmailChange: (String) -> Unit) {
-
-    Log.e("DATLBT", "LoginScreen: START")
-    OutlinedTextField(
-        value = email,
-        onValueChange = onEmailChange,
-        label = { Text("Username") },
-        modifier = Modifier.fillMaxWidth()
-    )
-    Log.e("DATLBT", "LoginScreen: End")
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun DefaultPreview() {
-    JetpackComposeNo1Theme() {
-        LoginScreen()
     }
 }
 
@@ -240,8 +185,6 @@ fun DemoTextField() {
 fun CheckboxParentExample() {
     // Initialize states for the child checkboxes
     val childCheckedStates = remember { mutableStateListOf(false, false, false) }
-
-    // Compute the parent state based on children's states
     val parentState = when {
         childCheckedStates.all { it } -> ToggleableState.On
         childCheckedStates.none { it } -> ToggleableState.Off
@@ -299,32 +242,6 @@ fun CheckboxParentExample() {
     if (childCheckedStates.all { it }) {
         Text("All options selected")
     }
-}
-
-@Composable
-fun CheckboxMinimalExample() {
-    var checked by remember { mutableStateOf(true) }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.selectable(
-            selected = checked,
-            onClick = { checked = !checked },
-            role = Role.Checkbox
-        )
-    ) {
-        Text(
-            "Minimal checkbox"
-        )
-        Checkbox(
-            checked = checked,
-            onCheckedChange = null
-        )
-    }
-
-    Text(
-        if (checked) "Checkbox is checked" else "Checkbox is unchecked"
-    )
 }
 
 @Composable

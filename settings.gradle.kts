@@ -24,4 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "JecpackComposeNo1"
 include(":app")
- 
+include(":mylibrary111")

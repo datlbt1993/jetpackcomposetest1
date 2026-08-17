@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AI CLeaner</string>
+    <!-- app_name do từng productFlavor set qua resValue — fallback nếu thiếu flavor -->
+    <string name="app_name">AI Cleaner</string>
     <string name="s_d_t_1">🧹 Duplicate files found</string>
     <string name="s_d_d_1">Free up space by removing repeated files in seconds</string>
     <string name="s_d_t_2">📦 Large files detected</string>

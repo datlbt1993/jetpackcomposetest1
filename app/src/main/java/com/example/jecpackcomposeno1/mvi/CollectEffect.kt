@@ -14,7 +14,7 @@ fun <T> CollectEffect(
     onEffect: suspend (T) -> Unit,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(effect, lifecycleOwner) {
+    LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             effect.collect(onEffect)
         }
