@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,8 +34,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.jecpackcomposeno1.MainSharedViewModel
 import com.example.jecpackcomposeno1.R
+import com.example.jecpackcomposeno1.extensions.LocalNavController
 import com.example.jecpackcomposeno1.navigation.AppDestination
 import com.example.jecpackcomposeno1.navigation.AppNavigator
+import com.example.jecpackcomposeno1.ui.discoveryScreen
 import com.example.jecpackcomposeno1.ui.theme.component.AppTextStyles
 import com.example.jecpackcomposeno1.ui.theme.screen.compress.CompressScreen
 import com.example.jecpackcomposeno1.ui.theme.screen.home.HomeNavHost
@@ -60,33 +63,37 @@ fun MainScreen() {
     val currentRoute = navController.currentRoute()
     val homeRoute = homeNavController.currentRoute()
     val showBottomBar = shouldShowBottomBar(currentRoute, homeRoute)
-    Scaffold(
-        bottomBar = {
-            if (showBottomBar) {
-                CustomBottomBar(
-                    currentRoute = currentRoute,
-                    onTabClick = { tab ->
-                        navigator.navigate(tab.destination)
-                    }
-                )
+
+    CompositionLocalProvider(LocalNavController provides navController) {
+        Scaffold(
+            bottomBar = {
+                if (showBottomBar) {
+                    CustomBottomBar(
+                        currentRoute = currentRoute,
+                        onTabClick = { tab ->
+                            navigator.navigate(tab.destination)
+                        }
+                    )
+                }
             }
-        }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = BottomTab.Home.route,
-            modifier = Modifier.padding(
-                bottom = if (showBottomBar) innerPadding.calculateBottomPadding() else 0.dp
-            )
-        ) {
-            composable(BottomTab.Home.route) {
-                HomeNavHost(
-                    navigator = navigator,
-                    sharedViewModel = sharedViewModel,
+        ) { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = BottomTab.Home.route,
+                modifier = Modifier.padding(
+                    bottom = if (showBottomBar) innerPadding.calculateBottomPadding() else 0.dp
                 )
+            ) {
+                composable(BottomTab.Home.route) {
+                    HomeNavHost(
+                        navigator = navigator,
+                        sharedViewModel = sharedViewModel,
+                    )
+                }
+                composable(BottomTab.Swipe.route) { SwipeScreen() }
+                composable(BottomTab.Compress.route) { CompressScreen() }
+                discoveryScreen()
             }
-            composable(BottomTab.Swipe.route) { SwipeScreen() }
-            composable(BottomTab.Compress.route) { CompressScreen() }
         }
     }
 }

@@ -35,6 +35,7 @@ class AppNavigator(
             )
 
             AppDestination.Back -> navigateBack()
+            AppDestination.DiscoveryScreen -> homeNav.navigateSafe(AppDestination.DiscoveryScreen.route)
         }
     }
 
