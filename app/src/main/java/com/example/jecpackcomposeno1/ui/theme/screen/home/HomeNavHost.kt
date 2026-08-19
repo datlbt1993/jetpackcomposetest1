@@ -29,7 +29,7 @@ fun HomeNavHost(
     val allFilesRationale = remember(appName) { manageStorageRationale(appName) }
     val requestStorage = rememberManageStorageRequester(
         rationale = allFilesRationale,
-        onOpenTarget = navigator::openHomeRoute,
+        onOpenTarget = navigator::openGatedDestination,
         onGranted = sharedViewModel::refreshStorage,
     )
 

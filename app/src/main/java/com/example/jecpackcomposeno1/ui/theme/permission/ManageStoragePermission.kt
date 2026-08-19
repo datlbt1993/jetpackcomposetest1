@@ -1,18 +1,19 @@
 package com.example.jecpackcomposeno1.ui.theme.permission
 
+import android.Manifest
 import android.app.Activity
+import android.app.AppOpsManager
 import android.app.Application
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.MainThread
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,11 +21,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.example.jecpackcomposeno1.R
+import com.example.jecpackcomposeno1.navigation.AppDestination
 import com.example.jecpackcomposeno1.ui.theme.component.CommonDialog
 import com.example.jecpackcomposeno1.ui.theme.component.hasManageExternalStoragePermission
 import com.example.jecpackcomposeno1.ui.theme.component.openAppSettings
@@ -43,38 +44,34 @@ fun manageStorageRationale(appName: String) = RationaleUi(
 @Composable
 fun rememberManageStorageRequester(
     rationale: RationaleUi,
-    onOpenTarget: (route: String) -> Unit,
+    onOpenTarget: (target: AppDestination) -> Unit,
     onGranted: () -> Unit,
-): (route: String) -> Unit {
+): (target: AppDestination) -> Unit {
     val context = LocalContext.current
     val currentOnOpenTarget by rememberUpdatedState(onOpenTarget)
     val currentOnGranted by rememberUpdatedState(onGranted)
 
-    val rationaleRoute = rememberSaveable { mutableStateOf<String?>(null) }
+    val rationaleTarget = remember { mutableStateOf<AppDestination?>(null) }
     /** Đang ở màn Settings, và ĐÃ điều hướng sang màn đích. */
     val awaitingSettings = rememberSaveable { mutableStateOf(false) }
-    /** Route chờ kết quả popup hệ thống (API < 30). Nhánh này CHƯA điều hướng. */
-    val legacyRoute = rememberSaveable { mutableStateOf<String?>(null) }
+    /** Đích chờ kết quả popup hệ thống (API < 30). Nhánh này CHƯA điều hướng. */
+    val legacyTarget = remember { mutableStateOf<AppDestination?>(null) }
 
-    /**
-     * Quay về từ Settings. Đã đứng sẵn ở màn đích nên không điều hướng gì nữa — có quyền
-     * thì nạp dữ liệu, không có thì để màn đích tự hiện trạng thái rỗng.
-     */
     fun settleReturnFromSettings() {
         if (!awaitingSettings.value) return
         awaitingSettings.value = false
-        ManageStorageGrantPoller.stop()
+        ManageStorageGrantWatcher.stop()
         if (context.hasManageExternalStoragePermission()) currentOnGranted()
     }
 
     val legacyPermissionState = rememberMultiplePermissionsState(
         permissions = Permission.ManageExternalStorage.manifestPermissions
     ) { _ ->
-        val route = legacyRoute.value ?: return@rememberMultiplePermissionsState
-        legacyRoute.value = null
+        val target = legacyTarget.value ?: return@rememberMultiplePermissionsState
+        legacyTarget.value = null
         if (context.hasManageExternalStoragePermission()) {
             currentOnGranted()
-            currentOnOpenTarget(route)
+            currentOnOpenTarget(target)
         }
     }
 
@@ -82,14 +79,12 @@ fun rememberManageStorageRequester(
         ActivityResultContracts.StartActivityForResult()
     ) { settleReturnFromSettings() }
 
-    // Lưới an toàn: nếu không kéo được app lên và user tự bấm back thì bắt ở đây.
-    // Bình thường result của launcher về TRƯỚC onResume nên nhánh này no-op.
     LifecycleResumeEffect(Unit) {
         settleReturnFromSettings()
         onPauseOrDispose { }
     }
 
-    rationaleRoute.value?.let { route ->
+    rationaleTarget.value?.let { target ->
         CommonDialog(
             image = rationale.image,
             title = rationale.title,
@@ -97,35 +92,36 @@ fun rememberManageStorageRequester(
             description = rationale.description,
             buttonText = rationale.buttonText,
             onButtonClick = {
-                rationaleRoute.value = null
+                rationaleTarget.value = null
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-                    legacyRoute.value = route
+                    legacyTarget.value = target
                     legacyPermissionState.launchMultiplePermissionRequest()
                     return@CommonDialog
                 }
-                context.findActivity()?.let(ManageStorageGrantPoller::start)
+                context.findActivity()?.let { activity ->
+                    val app = activity.application
+                    val activityClass = activity.javaClass
+                    ManageStorageGrantWatcher.start(app) { app.bringToFront(activityClass) }
+                }
                 if (settingsLauncher.launchFirstAvailable(context.allFilesAccessIntents())) {
                     awaitingSettings.value = true
-                    // Điều hướng NGAY: Activity vẫn đang RESUMED (transaction pause chỉ về
-                    // ở frame sau) nên navigateSafe chắc chắn đi được, và màn Settings sẽ
-                    // che toàn bộ animation chuyển màn.
-                    currentOnOpenTarget(route)
+                    currentOnOpenTarget(target)
                 } else {
-                    ManageStorageGrantPoller.stop()
+                    ManageStorageGrantWatcher.stop()
                     context.openAppSettings()
                 }
             },
-            onDismiss = { rationaleRoute.value = null }
+            onDismiss = { rationaleTarget.value = null }
         )
     }
 
     return remember(context) {
-        { route ->
+        { target ->
             if (context.hasManageExternalStoragePermission()) {
                 currentOnGranted()
-                currentOnOpenTarget(route)
+                currentOnOpenTarget(target)
             } else {
-                rationaleRoute.value = route
+                rationaleTarget.value = target
             }
         }
     }
@@ -144,45 +140,42 @@ private fun ActivityResultLauncher<Intent>.launchFirstAvailable(intents: List<In
     return false
 }
 
-internal object ManageStorageGrantPoller {
-    private const val POLL_MS = 250L
-    /** Bỏ cuộc nếu user bỏ đi luôn, tránh Handler quay mãi trong background. */
-    private const val TIMEOUT_MS = 3 * 60 * 1000L
-    private val handler = Handler(Looper.getMainLooper())
-    private var app: Application? = null
-    private var activityClass: Class<out Activity>? = null
-    private var elapsedMs = 0L
+/**
+ * Theo dõi appop MANAGE_EXTERNAL_STORAGE của chính app để biết NGAY khi user bật
+ * "All files access" trong Settings.
+ */
+internal object ManageStorageGrantWatcher {
+    private var appOps: AppOpsManager? = null
+    private var listener: AppOpsManager.OnOpChangedListener? = null
 
-    fun start(activity: Activity) {
-        app = activity.application
-        activityClass = activity.javaClass
-        elapsedMs = 0L
-        handler.removeCallbacks(poll)
-        handler.postDelayed(poll, POLL_MS)
-    }
+    private val opName: String =
+        AppOpsManager.permissionToOp(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+            ?: "android:manage_external_storage"
 
-    fun stop() {
-        app = null
-        activityClass = null
-        handler.removeCallbacks(poll)
-    }
-
-    private val poll = object : Runnable {
-        override fun run() {
-            val app = app ?: return
-            val cls = activityClass ?: return
-            if (app.hasManageExternalStoragePermission()) {
-                app.bringToFront(cls)
+    @MainThread
+    fun start(app: Application, onGranted: () -> Unit) {
+        stop()
+        val ops = app.getSystemService(AppOpsManager::class.java) ?: return
+        val opListener = AppOpsManager.OnOpChangedListener { _, pkg ->
+            if (pkg == app.packageName && app.hasManageExternalStoragePermission()) {
+                onGranted()
                 stop()
-                return
             }
-            elapsedMs += POLL_MS
-            if (elapsedMs >= TIMEOUT_MS) {
-                stop()
-                return
-            }
-            handler.postDelayed(this, POLL_MS)
         }
+        val watching = runCatching {
+            ops.startWatchingMode(opName, app.packageName, opListener)
+        }.isSuccess
+        if (!watching) return
+
+        appOps = ops
+        listener = opListener
+    }
+
+    @MainThread
+    fun stop() {
+        listener?.let { current -> runCatching { appOps?.stopWatchingMode(current) } }
+        listener = null
+        appOps = null
     }
 }
 

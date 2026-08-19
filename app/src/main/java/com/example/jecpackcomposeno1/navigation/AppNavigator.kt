@@ -10,9 +10,9 @@ class AppNavigator(
     private val rootNav: NavHostController,
     val homeNav: NavHostController,
 ) {
-    private var storageGate: ((String) -> Unit)? = null
+    private var storageGate: ((AppDestination) -> Unit)? = null
 
-    fun bindStorageGate(gate: ((String) -> Unit)?) {
+    fun bindStorageGate(gate: ((AppDestination) -> Unit)?) {
         storageGate = gate
     }
 
@@ -22,12 +22,8 @@ class AppNavigator(
             AppDestination.TabSwipe -> rootNav.navigateTab(MainRoute.Swipe)
             AppDestination.TabCompress -> rootNav.navigateTab(MainRoute.Compress)
 
-            AppDestination.Photos -> openWithStorageGate(
-                MainRoute.listPhotoVideo(MainRoute.MediaPhotos),
-            )
-            AppDestination.Videos -> openWithStorageGate(
-                MainRoute.listPhotoVideo(MainRoute.MediaVideos),
-            )
+            AppDestination.Photos -> openWithStorageGate(AppDestination.Photos)
+            AppDestination.Videos -> openWithStorageGate(AppDestination.Videos)
             AppDestination.Trash -> homeNav.navigateSafe(MainRoute.Trash)
 
             is AppDestination.VideoPlayer -> homeNav.navigateSafe(
@@ -39,8 +35,9 @@ class AppNavigator(
         }
     }
 
-    /** Mở route Home sau khi gate xin quyền xong. */
-    fun openHomeRoute(route: String) {
+    /** Mở màn đích sau khi gate xin quyền xong — KHÔNG đi qua gate lần nữa. */
+    fun openGatedDestination(dest: AppDestination) {
+        val route = gatedRoute(dest) ?: return
         homeNav.navigateSafe(route) { launchSingleTop = true }
     }
 
@@ -64,14 +61,21 @@ class AppNavigator(
         }
     }
 
-    private fun openWithStorageGate(route: String) {
+    private fun openWithStorageGate(dest: AppDestination) {
         val gate = storageGate
         if (gate != null) {
-            gate(route)
+            gate(dest)
         } else {
             // Lưới an toàn: gate luôn được bind khi tab Home đang hiển thị.
-            homeNav.navigateSafe(route)
+            openGatedDestination(dest)
         }
+    }
+
+    /** Route của các màn đi qua storage gate. null = đích không nằm sau gate. */
+    private fun gatedRoute(dest: AppDestination): String? = when (dest) {
+        AppDestination.Photos -> MainRoute.listPhotoVideo(MainRoute.MediaPhotos)
+        AppDestination.Videos -> MainRoute.listPhotoVideo(MainRoute.MediaVideos)
+        else -> null
     }
 }
 
